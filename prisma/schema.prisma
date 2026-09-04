@@ -1,0 +1,187 @@
+// EduAlert PCMB — PostgreSQL / Supabase schema
+// Enable RLS on user-owned tables (user_preferences, user_exam_tracker,
+// notifications_queue, device_tokens); exams/exam_dates/exam_fees are public read.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ExamCategory {
+  ENGINEERING
+  MEDICAL
+  DEFENSE
+  RESEARCH
+  STATE_CET
+}
+
+enum Stream {
+  PCM
+  PCB
+  PCMB
+}
+
+enum EventType {
+  NOTIFICATION_RELEASED
+  REGISTRATION_OPEN
+  REGISTRATION_CLOSE
+  LATE_FEE_CLOSE
+  CORRECTION_WINDOW
+  CITY_INTIMATION_SLIP
+  ADMIT_CARD
+  EXAM_DATE
+  ANSWER_KEY
+  RESULT
+  COUNSELING
+}
+
+enum NotificationChannel {
+  PUSH
+  WHATSAPP
+  SMS
+  EMAIL
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+  CANCELLED
+  SUPPRESSED_DND
+}
+
+model Exam {
+  id                  String       @id @default(uuid())
+  slug                String       @unique
+  fullName            String       @map("full_name")
+  shortCode           String       @map("short_code")
+  category            ExamCategory
+  streams             Stream[]
+  conductingBody      String       @map("conducting_body")
+  officialWebsite     String       @map("official_website")
+  applicationUrl      String       @map("application_url")
+  homeState           String?      @map("home_state") // null = all-India
+  eligibilitySummary  String       @map("eligibility_summary")
+  minPercentage       String?      @map("min_percentage")
+  ageLimit            String?      @map("age_limit")
+  examPattern         String?      @map("exam_pattern")
+  syllabusPdfUrl      String?      @map("syllabus_pdf_url")
+  bulletinPdfUrl      String?      @map("bulletin_pdf_url")
+  isActive            Boolean      @default(true) @map("is_active")
+  createdAt           DateTime     @default(now()) @map("created_at")
+  updatedAt           DateTime     @updatedAt @map("updated_at")
+
+  dates         ExamDate[]
+  fees          ExamFee[]
+  notifications NotificationQueue[]
+  trackers      UserExamTracker[]
+
+  @@index([category, homeState])
+  @@map("exams")
+}
+
+model ExamDate {
+  id            String    @id @default(uuid())
+  examId        String    @map("exam_id")
+  eventType     EventType @map("event_type")
+  label         String
+  startDatetime DateTime  @map("start_datetime")
+  endDatetime   DateTime? @map("end_datetime")
+  isTentative   Boolean   @default(true) @map("is_tentative")
+  isExtended    Boolean   @default(false) @map("is_extended")
+  sourceUrl     String?   @map("source_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([startDatetime])
+  @@index([examId, eventType])
+  @@map("exam_dates")
+}
+
+model ExamFee {
+  id            String @id @default(uuid())
+  examId        String @map("exam_id")
+  categoryLabel String @map("category_label")
+  amount        Int
+  currency      String @default("INR")
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@unique([examId, categoryLabel])
+  @@map("exam_fees")
+}
+
+model UserPreference {
+  userId          String   @id @map("user_id") // = auth.users.id
+  stream          Stream
+  homeState       String   @map("home_state")
+  careerPathways  String[] @map("career_pathways")
+  followedExamIds String[] @map("followed_exam_ids")
+  dreamExamIds    String[] @map("dream_exam_ids") // max 3, bypass DND
+  hiddenExamIds   String[] @map("hidden_exam_ids")
+  dndStartHour    Int      @default(22) @map("dnd_start_hour")
+  dndEndHour      Int      @default(7) @map("dnd_end_hour")
+  whatsappNumber  String?  @map("whatsapp_number")
+  channels        NotificationChannel[] @default([PUSH])
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("user_preferences")
+}
+
+model UserExamTracker {
+  id                 String   @id @default(uuid())
+  userId             String   @map("user_id")
+  examId             String   @map("exam_id")
+  applied            Boolean  @default(false)
+  feePaid            Boolean  @default(false)
+  admitCardDownloaded Boolean @default(false) @map("admit_card_downloaded")
+  // Client-side encrypted blob; server never stores plaintext credentials.
+  encryptedNotes     String?  @map("encrypted_notes")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, examId])
+  @@map("user_exam_tracker")
+}
+
+model DeviceToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  fcmToken  String   @unique @map("fcm_token")
+  platform  String
+  lastSeenAt DateTime @default(now()) @map("last_seen_at")
+
+  @@index([userId])
+  @@map("device_tokens")
+}
+
+model NotificationQueue {
+  id          String              @id @default(uuid())
+  userId      String              @map("user_id")
+  examId      String              @map("exam_id")
+  examDateId  String?             @map("exam_date_id")
+  triggerKey  String              @map("trigger_key") // e.g. "REGISTRATION_CLOSE:T-48H"
+  scheduledAt DateTime            @map("scheduled_at")
+  sentAt      DateTime?           @map("sent_at")
+  channel     NotificationChannel @default(PUSH)
+  payload     Json
+  status      NotificationStatus  @default(QUEUED)
+  isHighPriority Boolean          @default(false) @map("is_high_priority")
+  error       String?
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  // Idempotency: one notification per user/date/trigger, ever.
+  @@unique([userId, examDateId, triggerKey, channel])
+  @@index([status, scheduledAt])
+  @@map("notifications_queue")
+}
