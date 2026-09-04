@@ -12,9 +12,10 @@ export type ExamStatus = {
   key: StatusKey;
   label: string;
   /** The date driving the countdown, if any. */
-  focus?: ExamDate;
-  focusLabel?: string;
+  focus?: ExamDate | undefined;
+  focusLabel?: string | undefined;
 };
+
 
 const at = (iso: string) => new Date(iso).getTime();
 
