@@ -1,9 +1,9 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Bell, BellRing, ExternalLink } from "lucide-react";
-import { CATEGORY_META, getExam } from "@/data/exams";
+import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/data/exams";
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
-import { useLocalList } from "@/hooks/use-tracker";
+import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { cn } from "@/lib/utils";
 
 const CHECKLIST = [
@@ -41,7 +41,9 @@ export const Route = createFileRoute("/exam/$slug")({
 });
 
 function ExamDetail() {
-  const { exam } = Route.useLoaderData();
+  const { exam: baseExam } = Route.useLoaderData();
+  const [year] = useAttemptYear(BASE_CYCLE_YEAR);
+  const exam = shiftExamToCycle(baseExam, year);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30_000);

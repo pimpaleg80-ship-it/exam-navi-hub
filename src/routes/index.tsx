@@ -1,10 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { CalendarClock, Search, ShieldCheck } from "lucide-react";
-import { CATEGORY_META, EXAMS, STATES, type ExamCategory, type Stream } from "@/data/exams";
+import {
+  ATTEMPT_YEARS,
+  BASE_CYCLE_YEAR,
+  CATEGORY_META,
+  STATES,
+  examsForCycle,
+  type ExamCategory,
+  type Stream,
+} from "@/data/exams";
 import { ExamCard } from "@/components/exam-card";
 import { getExamStatus, nextMilestone } from "@/lib/exam-status";
-import { useLocalList } from "@/hooks/use-tracker";
+import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -46,10 +54,12 @@ function Dashboard() {
   const [onlyFollowed, setOnlyFollowed] = useState(false);
 
   const follow = useLocalList("followed");
+  const [year, setYear] = useAttemptYear(BASE_CYCLE_YEAR);
+  const cycleExams = useMemo(() => examsForCycle(year), [year]);
 
   const exams = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return EXAMS.filter((e) => {
+    return cycleExams.filter((e) => {
       if (stream !== "all" && !e.streams.includes(stream)) return false;
       if (category !== "all" && e.category !== category) return false;
       if (state !== "All India" && e.state && e.state !== state) return false;
@@ -64,7 +74,7 @@ function Dashboard() {
       if (!bm) return -1;
       return new Date(am.start_datetime).getTime() - new Date(bm.start_datetime).getTime();
     });
-  }, [stream, category, state, query, onlyFollowed, follow, now]);
+  }, [cycleExams, stream, category, state, query, onlyFollowed, follow, now]);
 
   const openCount = exams.filter((e) => {
     const k = getExamStatus(e, now).key;
@@ -87,7 +97,7 @@ function Dashboard() {
             correction slots, admit cards and results, all on IST.
           </p>
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
-            <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={EXAMS.length} />
+            <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={cycleExams.length} />
             <Stat icon={<ShieldCheck className="size-4" />} label="Registration open" value={openCount} />
             <Stat
               icon={<CalendarClock className="size-4" />}
@@ -111,6 +121,18 @@ function Dashboard() {
                 className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
             </label>
+            <select
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
+              className="rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium outline-none focus:ring-2 focus:ring-ring"
+              aria-label="Attempt year"
+            >
+              {ATTEMPT_YEARS.map((y) => (
+                <option key={y} value={y}>
+                  Attempt {y}
+                </option>
+              ))}
+            </select>
             <select
               value={state}
               onChange={(e) => setState(e.target.value)}
