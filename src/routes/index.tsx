@@ -54,10 +54,12 @@ function Dashboard() {
   const [onlyFollowed, setOnlyFollowed] = useState(false);
 
   const follow = useLocalList("followed");
+  const [year, setYear] = useAttemptYear(BASE_CYCLE_YEAR);
+  const cycleExams = useMemo(() => examsForCycle(year), [year]);
 
   const exams = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return EXAMS.filter((e) => {
+    return cycleExams.filter((e) => {
       if (stream !== "all" && !e.streams.includes(stream)) return false;
       if (category !== "all" && e.category !== category) return false;
       if (state !== "All India" && e.state && e.state !== state) return false;
