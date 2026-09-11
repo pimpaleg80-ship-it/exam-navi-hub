@@ -74,7 +74,7 @@ function Dashboard() {
       if (!bm) return -1;
       return new Date(am.start_datetime).getTime() - new Date(bm.start_datetime).getTime();
     });
-  }, [stream, category, state, query, onlyFollowed, follow, now]);
+  }, [cycleExams, stream, category, state, query, onlyFollowed, follow, now]);
 
   const openCount = exams.filter((e) => {
     const k = getExamStatus(e, now).key;
