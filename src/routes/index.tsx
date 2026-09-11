@@ -1,18 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { CalendarClock, Search, ShieldCheck } from "lucide-react";
+import { CalendarClock, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
   CATEGORY_META,
   STATES,
-  examsForCycle,
   type ExamCategory,
   type Stream,
 } from "@/data/exams";
 import { ExamCard } from "@/components/exam-card";
 import { getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
+import { useExamSync } from "@/hooks/use-exam-sync";
+import { formatSyncedAgo } from "@/lib/exam-sync";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
