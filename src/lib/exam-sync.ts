@@ -29,18 +29,16 @@ export function applyRevisions(exams: Exam[], revisions: ExamRevision[]): Exam[]
       }
       patch.delete(keyOf(exam.slug, date.event_type));
       if (r.removed) continue;
-      dates.push({
+      const merged: ExamDate = {
         ...date,
         ...(r.label ? { label: r.label } : {}),
         ...(r.start_datetime ? { start_datetime: r.start_datetime } : {}),
-        ...(r.end_datetime === null
-          ? { end_datetime: undefined }
-          : r.end_datetime
-            ? { end_datetime: r.end_datetime }
-            : {}),
+        ...(r.end_datetime ? { end_datetime: r.end_datetime } : {}),
         ...(r.is_tentative === undefined ? {} : { is_tentative: r.is_tentative }),
         ...(r.is_extended === undefined ? {} : { is_extended: r.is_extended }),
-      });
+      };
+      if (r.end_datetime === null) delete merged.end_datetime;
+      dates.push(merged);
     }
 
     // Revisions for milestones the seed catalog does not have yet.
