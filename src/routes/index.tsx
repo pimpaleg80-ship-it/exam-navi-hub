@@ -97,7 +97,7 @@ function Dashboard() {
             correction slots, admit cards and results, all on IST.
           </p>
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
-            <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={EXAMS.length} />
+            <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={cycleExams.length} />
             <Stat icon={<ShieldCheck className="size-4" />} label="Registration open" value={openCount} />
             <Stat
               icon={<CalendarClock className="size-4" />}
