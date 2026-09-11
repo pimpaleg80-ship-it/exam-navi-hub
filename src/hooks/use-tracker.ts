@@ -43,3 +43,23 @@ export function useLocalList(bucket: string) {
 
   return { items, hydrated, toggle, has: (id: string) => items.includes(id) };
 }
+
+const YEAR_KEY = "edualert.attemptYear";
+
+/** Attempt/admission year the student is planning for. */
+export function useAttemptYear(fallback: number) {
+  const [year, setYear] = useState(fallback);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = Number(window.localStorage.getItem(YEAR_KEY));
+    if (stored) setYear(stored);
+  }, []);
+
+  const update = useCallback((next: number) => {
+    setYear(next);
+    window.localStorage.setItem(YEAR_KEY, String(next));
+  }, []);
+
+  return [year, update] as const;
+}
