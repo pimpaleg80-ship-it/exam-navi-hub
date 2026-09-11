@@ -728,4 +728,37 @@ export const EXAMS: Exam[] = [
   },
 ];
 
-export const getExam = (slug: string) => EXAMS.find((e) => e.slug === slug);
+/** The admission cycle the seeded dates belong to. */
+export const BASE_CYCLE_YEAR = 2027;
+
+/** Attempt years students can plan for. */
+export const ATTEMPT_YEARS = [2026, 2027, 2028, 2029];
+
+const shiftIso = (iso: string, years: number) => {
+  const dt = new Date(iso);
+  dt.setUTCFullYear(dt.getUTCFullYear() + years);
+  return dt.toISOString();
+};
+
+/** Project an exam's calendar onto another attempt year. */
+export function shiftExamToCycle(exam: Exam, year: number): Exam {
+  const delta = year - BASE_CYCLE_YEAR;
+  if (delta === 0) return exam;
+  return {
+    ...exam,
+    dates: exam.dates.map((d0) => ({
+      ...d0,
+      start_datetime: shiftIso(d0.start_datetime, delta),
+      ...(d0.end_datetime ? { end_datetime: shiftIso(d0.end_datetime, delta) } : {}),
+      is_tentative: true,
+    })),
+  };
+}
+
+export const examsForCycle = (year: number) =>
+  EXAMS.map((e) => shiftExamToCycle(e, year));
+
+export const getExam = (slug: string, year = BASE_CYCLE_YEAR) => {
+  const exam = EXAMS.find((e) => e.slug === slug);
+  return exam ? shiftExamToCycle(exam, year) : undefined;
+};
