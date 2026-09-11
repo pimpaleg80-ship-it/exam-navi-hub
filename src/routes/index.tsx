@@ -122,6 +122,18 @@ function Dashboard() {
               />
             </label>
             <select
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
+              className="rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium outline-none focus:ring-2 focus:ring-ring"
+              aria-label="Attempt year"
+            >
+              {ATTEMPT_YEARS.map((y) => (
+                <option key={y} value={y}>
+                  Attempt {y}
+                </option>
+              ))}
+            </select>
+            <select
               value={state}
               onChange={(e) => setState(e.target.value)}
               className="rounded-lg border border-input bg-card px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
