@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExamSlugRouteImport } from './routes/exam.$slug'
 import { Route as ApiPublicCronDispatchNotificationsRouteImport } from './routes/api/public/cron/dispatch-notifications'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExamSlugRoute = ExamSlugRouteImport.update({
+  id: '/exam/$slug',
+  path: '/exam/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicCronDispatchNotificationsRoute =
@@ -26,27 +32,32 @@ const ApiPublicCronDispatchNotificationsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/cron/dispatch-notifications'
+  fullPaths: '/' | '/exam/$slug' | '/api/public/cron/dispatch-notifications'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/cron/dispatch-notifications'
-  id: '__root__' | '/' | '/api/public/cron/dispatch-notifications'
+  to: '/' | '/exam/$slug' | '/api/public/cron/dispatch-notifications'
+  id:
+    '__root__' | '/' | '/exam/$slug' | '/api/public/cron/dispatch-notifications'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExamSlugRoute: typeof ExamSlugRoute
   ApiPublicCronDispatchNotificationsRoute: typeof ApiPublicCronDispatchNotificationsRoute
 }
 
@@ -57,6 +68,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam/$slug': {
+      id: '/exam/$slug'
+      path: '/exam/$slug'
+      fullPath: '/exam/$slug'
+      preLoaderRoute: typeof ExamSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/cron/dispatch-notifications': {
@@ -71,6 +89,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExamSlugRoute: ExamSlugRoute,
   ApiPublicCronDispatchNotificationsRoute:
     ApiPublicCronDispatchNotificationsRoute,
 }
