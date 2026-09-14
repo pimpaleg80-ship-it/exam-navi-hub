@@ -4,6 +4,7 @@ import { ArrowLeft, Bell, BellRing, ExternalLink } from "lucide-react";
 import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/data/exams";
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
+import { RouteError } from "@/components/route-error";
 import { cn } from "@/lib/utils";
 
 const CHECKLIST = [
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/exam/$slug")({
       ],
     };
   },
+  errorComponent: RouteError,
   component: ExamDetail,
 });
 
@@ -69,7 +71,7 @@ function ExamDetail() {
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                {CATEGORY_META[exam.category].label}
+                {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
                 {exam.state ? ` · ${exam.state}` : ""}
               </p>
               <h1 className="mt-1 text-3xl font-bold tracking-tight">{exam.short_code}</h1>
@@ -119,7 +121,7 @@ function ExamDetail() {
         <section>
           <h2 className="text-lg font-semibold">Full timeline</h2>
           <ol className="mt-4 space-y-3">
-            {[...exam.dates]
+            {[...(exam.dates ?? [])]
               .sort(
                 (a, b) =>
                   new Date(a.start_datetime).getTime() - new Date(b.start_datetime).getTime(),
@@ -164,7 +166,7 @@ function ExamDetail() {
             <Row label="Minimum marks" value={exam.min_percentage} />
             <Row label="Age limit" value={exam.age_limit} />
             <Row label="Exam pattern" value={exam.pattern} />
-            <Row label="Streams" value={exam.streams.join(" · ")} />
+            <Row label="Streams" value={(exam.streams ?? []).join(" · ")} />
           </dl>
         </section>
 
@@ -172,7 +174,7 @@ function ExamDetail() {
           <div className="rounded-xl border bg-card p-4">
             <h2 className="text-sm font-semibold">Application fee</h2>
             <ul className="mt-3 space-y-2 text-sm">
-              {exam.fees.map((fee) => (
+              {(exam.fees ?? []).map((fee) => (
                 <li key={fee.category_label} className="flex justify-between gap-3">
                   <span className="text-muted-foreground">{fee.category_label}</span>
                   <span className="font-semibold tabular-nums">
