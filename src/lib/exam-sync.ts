@@ -3,9 +3,30 @@ import type { ExamRevision } from "@/data/exam-revisions";
 
 const keyOf = (slug: string, event: string) => `${slug}::${event}`;
 
-/** Merge official date revisions onto a projected exam catalog. */
-export function applyRevisions(exams: Exam[], revisions: ExamRevision[]): Exam[] {
-  if (revisions.length === 0) return exams;
+const isValidIso = (value: unknown): value is string =>
+  typeof value === "string" && !Number.isNaN(new Date(value).getTime());
+
+/** Drop malformed feed rows so one bad entry can never break the merge. */
+export function sanitizeRevisions(revisions: unknown): ExamRevision[] {
+  if (!Array.isArray(revisions)) return [];
+  return revisions.filter((r): r is ExamRevision => {
+    if (!r || typeof r !== "object") return false;
+    const rev = r as Partial<ExamRevision>;
+    if (typeof rev.exam_slug !== "string" || rev.exam_slug.length === 0) return false;
+    if (typeof rev.event_type !== "string" || rev.event_type.length === 0) return false;
+    if (typeof rev.year !== "number" || !Number.isInteger(rev.year)) return false;
+    if (rev.start_datetime !== undefined && !isValidIso(rev.start_datetime)) return false;
+    if (rev.end_datetime !== undefined && rev.end_datetime !== null && !isValidIso(rev.end_datetime))
+      return false;
+    if (typeof rev.revised_at !== "string") return false;
+    return true;
+  });
+}
+
+/** Merge official date revisions onto a projected exam catalog. Never throws. */
+export function applyRevisions(exams: Exam[] | undefined, revisions: ExamRevision[]): Exam[] {
+  const base = Array.isArray(exams) ? exams : [];
+  if (revisions.length === 0) return base;
 
   const byExam = new Map<string, ExamRevision[]>();
   for (const r of revisions) {
@@ -14,7 +35,7 @@ export function applyRevisions(exams: Exam[], revisions: ExamRevision[]): Exam[]
     byExam.set(r.exam_slug, list);
   }
 
-  return exams.map((exam) => {
+  return base.map((exam) => {
     const list = byExam.get(exam.slug);
     if (!list?.length) return exam;
 
@@ -63,7 +84,9 @@ export function applyRevisions(exams: Exam[], revisions: ExamRevision[]): Exam[]
 
 export function formatSyncedAgo(iso: string | undefined, now = Date.now()) {
   if (!iso) return "syncing…";
-  const secs = Math.max(0, Math.round((now - new Date(iso).getTime()) / 1000));
+  const t = new Date(iso).getTime();
+  if (Number.isNaN(t)) return "syncing…";
+  const secs = Math.max(0, Math.round((now - t) / 1000));
   if (secs < 60) return "just now";
   const mins = Math.floor(secs / 60);
   if (mins < 60) return `${mins} min ago`;
