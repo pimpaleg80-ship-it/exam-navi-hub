@@ -56,7 +56,7 @@ function Dashboard() {
 
   const follow = useLocalList("followed");
   const [year, setYear] = useAttemptYear(BASE_CYCLE_YEAR);
-  const cycleExams = useMemo(() => examsForCycle(year), [year]);
+  const { exams: cycleExams, syncedAt, isSyncing, refresh } = useExamSync(year);
 
   const exams = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -106,6 +106,14 @@ function Dashboard() {
               value={urgentCount}
               tone={urgentCount > 0 ? "urgent" : "default"}
             />
+            <button
+              type="button"
+              onClick={() => refresh()}
+              className="flex items-center gap-2 rounded-xl border border-input px-3 py-2 text-xs text-muted-foreground hover:bg-secondary"
+            >
+              <RefreshCw className={cn("size-4", isSyncing && "animate-spin")} />
+              Synced {formatSyncedAgo(syncedAt, now)}
+            </button>
           </div>
         </div>
       </header>
