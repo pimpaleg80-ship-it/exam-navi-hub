@@ -4,6 +4,7 @@ import { ArrowLeft, Bell, BellRing, ExternalLink } from "lucide-react";
 import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/data/exams";
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
+import { RouteError } from "@/components/route-error";
 import { cn } from "@/lib/utils";
 
 const CHECKLIST = [
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/exam/$slug")({
       ],
     };
   },
+  errorComponent: RouteError,
   component: ExamDetail,
 });
 

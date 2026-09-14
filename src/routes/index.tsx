@@ -14,6 +14,7 @@ import { getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { useExamSync } from "@/hooks/use-exam-sync";
 import { formatSyncedAgo } from "@/lib/exam-sync";
+import { RouteError } from "@/components/route-error";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -35,6 +36,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  errorComponent: RouteError,
   component: Dashboard,
 });
 

@@ -52,13 +52,23 @@ export function useAttemptYear(fallback: number) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = Number(window.localStorage.getItem(YEAR_KEY));
-    if (stored) setYear(stored);
+    try {
+      const stored = Number(window.localStorage.getItem(YEAR_KEY));
+      // Reject NaN, zero and implausible years left by older versions.
+      if (Number.isInteger(stored) && stored >= 2024 && stored <= 2040) setYear(stored);
+    } catch {
+      /* storage unavailable — keep the fallback year */
+    }
   }, []);
 
   const update = useCallback((next: number) => {
+    if (!Number.isInteger(next)) return;
     setYear(next);
-    window.localStorage.setItem(YEAR_KEY, String(next));
+    try {
+      window.localStorage.setItem(YEAR_KEY, String(next));
+    } catch {
+      /* storage unavailable — state still updated for this session */
+    }
   }, []);
 
   return [year, update] as const;
