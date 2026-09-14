@@ -63,19 +63,25 @@ function Dashboard() {
   const exams = useMemo(() => {
     const q = query.trim().toLowerCase();
     return cycleExams.filter((e) => {
-      if (stream !== "all" && !e.streams.includes(stream)) return false;
+      if (!e || typeof e.slug !== "string") return false;
+      if (stream !== "all" && !(e.streams ?? []).includes(stream)) return false;
       if (category !== "all" && e.category !== category) return false;
       if (state !== "All India" && e.state && e.state !== state) return false;
       if (onlyFollowed && !follow.has(e.slug)) return false;
-      if (q && !`${e.short_code} ${e.full_name} ${e.conducting_body}`.toLowerCase().includes(q))
-        return false;
+      const haystack = `${e.short_code ?? ""} ${e.full_name ?? ""} ${e.conducting_body ?? ""}`;
+      if (q && !haystack.toLowerCase().includes(q)) return false;
       return true;
     }).sort((a, b) => {
       const am = nextMilestone(a, now);
       const bm = nextMilestone(b, now);
+      if (!am && !bm) return 0;
       if (!am) return 1;
       if (!bm) return -1;
-      return new Date(am.start_datetime).getTime() - new Date(bm.start_datetime).getTime();
+      const at = new Date(am.start_datetime).getTime();
+      const bt = new Date(bm.start_datetime).getTime();
+      if (Number.isNaN(at)) return 1;
+      if (Number.isNaN(bt)) return -1;
+      return at - bt;
     });
   }, [cycleExams, stream, category, state, query, onlyFollowed, follow, now]);
 
