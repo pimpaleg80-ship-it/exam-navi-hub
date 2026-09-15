@@ -20,6 +20,7 @@ import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "EduAlert PCMB — Exam Deadline Tracker for Indian Students" },
