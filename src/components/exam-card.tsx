@@ -77,7 +77,10 @@ export function ExamCard({
           <div className="mt-1 flex items-baseline gap-3">
             {(["days", "hours", "minutes"] as const).map((unit) => (
               <span key={unit} className="flex items-baseline gap-1">
-                <span className={cn("text-2xl font-bold tabular-nums", urgent ? "text-destructive" : "text-foreground")}>
+                <span
+                  suppressHydrationWarning
+                  className={cn("text-2xl font-bold tabular-nums", urgent ? "text-destructive" : "text-foreground")}
+                >
                   {countdown[unit]}
                 </span>
                 <span className="text-xs text-muted-foreground">{unit.slice(0, 1)}</span>
