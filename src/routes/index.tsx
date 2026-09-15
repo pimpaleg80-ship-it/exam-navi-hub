@@ -5,6 +5,7 @@ import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
   CATEGORY_META,
+  examsForCycle,
   STATES,
   type ExamCategory,
   type Stream,
