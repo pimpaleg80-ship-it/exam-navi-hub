@@ -5,6 +5,7 @@ import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/dat
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { RouteError } from "@/components/route-error";
+import { SITE_URL, examDetailJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 
 const CHECKLIST = [
