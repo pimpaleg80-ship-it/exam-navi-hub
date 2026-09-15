@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://exam-navi-hub.lovable.app/sitemap.xml
