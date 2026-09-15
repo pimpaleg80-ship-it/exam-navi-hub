@@ -5,6 +5,7 @@ import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/dat
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { RouteError } from "@/components/route-error";
+import { SITE_URL, examDetailJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 
 const CHECKLIST = [
@@ -27,6 +28,8 @@ export const Route = createFileRoute("/exam/$slug")({
     const { exam } = loaderData;
     const title = `${exam.short_code} dates, fees & eligibility — EduAlert PCMB`;
     const description = `${exam.full_name} by ${exam.conducting_body}: registration window, admit card, exam day and result dates with live countdowns.`;
+    const url = `${SITE_URL}/exam/${exam.slug}`;
+    const { page, breadcrumbs, events } = examDetailJsonLd(exam);
     return {
       meta: [
         { title },
@@ -34,7 +37,17 @@ export const Route = createFileRoute("/exam/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(page) },
+        { type: "application/ld+json", children: JSON.stringify(breadcrumbs) },
+        ...events.map((event) => ({
+          type: "application/ld+json",
+          children: JSON.stringify(event),
+        })),
       ],
     };
   },

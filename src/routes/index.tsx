@@ -5,6 +5,7 @@ import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
   CATEGORY_META,
+  examsForCycle,
   STATES,
   type ExamCategory,
   type Stream,
@@ -15,6 +16,7 @@ import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { useExamSync } from "@/hooks/use-exam-sync";
 import { formatSyncedAgo } from "@/lib/exam-sync";
 import { RouteError } from "@/components/route-error";
+import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -33,7 +35,24 @@ export const Route = createFileRoute("/")({
           "Countdown timers and alerts for engineering, medical, defense, research and state CET entrance exams.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: SITE_URL }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(examListJsonLd(examsForCycle(BASE_CYCLE_YEAR))),
+      },
+      ...examsForCycle(BASE_CYCLE_YEAR).flatMap((exam) =>
+        (exam.dates ?? [])
+          .map((date, i) => examEventJsonLd(exam, date, i))
+          .filter((x): x is NonNullable<typeof x> => Boolean(x))
+          .map((event) => ({
+            type: "application/ld+json",
+            children: JSON.stringify(event),
+          })),
+      ),
     ],
   }),
   errorComponent: RouteError,
