@@ -151,9 +151,11 @@ function Dashboard() {
           <div className="flex flex-wrap items-center gap-3">
             <label className="relative flex-1 min-w-[200px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <span className="sr-only">Search exams</span>
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search exams"
                 placeholder="Search exam, body or code"
                 className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
