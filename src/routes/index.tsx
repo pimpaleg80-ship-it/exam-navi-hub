@@ -217,6 +217,9 @@ function Dashboard() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
+        <h2 className="mb-4 text-xl font-semibold tracking-tight">
+          Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
+        </h2>
         {exams.length === 0 ? (
           <p className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
             No exams match these filters yet. Try widening the stream or state.
