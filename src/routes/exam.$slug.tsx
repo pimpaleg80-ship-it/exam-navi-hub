@@ -16,6 +16,7 @@ const CHECKLIST = [
 ];
 
 export const Route = createFileRoute("/exam/$slug")({
+  staticData: { sitemap: true },
   loader: ({ params }) => {
     const exam = getExam(params.slug);
     if (!exam) throw notFound();

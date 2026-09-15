@@ -20,6 +20,7 @@ import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "EduAlert PCMB — Exam Deadline Tracker for Indian Students" },
@@ -150,9 +151,11 @@ function Dashboard() {
           <div className="flex flex-wrap items-center gap-3">
             <label className="relative flex-1 min-w-[200px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <span className="sr-only">Search exams</span>
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search exams"
                 placeholder="Search exam, body or code"
                 className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
@@ -214,6 +217,9 @@ function Dashboard() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
+        <h2 className="mb-4 text-xl font-semibold tracking-tight">
+          Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
+        </h2>
         {exams.length === 0 ? (
           <p className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
             No exams match these filters yet. Try widening the stream or state.

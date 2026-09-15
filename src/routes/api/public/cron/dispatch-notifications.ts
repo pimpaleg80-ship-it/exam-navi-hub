@@ -10,6 +10,7 @@ import { planTriggers } from "@/lib/notification-scheduler";
  *        -H "x-cron-secret: $CRON_SECRET"
  */
 export const Route = createFileRoute("/api/public/cron/dispatch-notifications")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       POST: async ({ request }) => {
