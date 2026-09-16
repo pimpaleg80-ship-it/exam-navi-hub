@@ -18,6 +18,7 @@ import { formatSyncedAgo } from "@/lib/exam-sync";
 import { RouteError } from "@/components/route-error";
 import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -113,19 +114,19 @@ function Dashboard() {
 
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b bg-card">
+      <header className="border-b bg-card/85 shadow-soft backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          <p className="animate-fade-in text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             EduAlert PCMB
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-2 animate-fade-in text-3xl font-extrabold tracking-tight sm:text-4xl">
             Every PCMB entrance deadline, in one countdown.
           </h1>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+          <p className="mt-2 max-w-2xl animate-fade-in text-sm text-muted-foreground sm:text-base">
             Engineering, medical, defense, research and state CET exams — registration windows,
             correction slots, admit cards and results, all on IST.
           </p>
-          <div className="mt-5 flex flex-wrap gap-3 text-sm">
+          <div className="mt-5 flex animate-fade-in flex-wrap gap-3 text-sm">
             <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={cycleExams.length} />
             <Stat icon={<ShieldCheck className="size-4" />} label="Registration open" value={openCount} />
             <Stat
@@ -137,7 +138,7 @@ function Dashboard() {
             <button
               type="button"
               onClick={() => refresh()}
-              className="flex items-center gap-2 rounded-xl border border-input px-3 py-2 text-xs text-muted-foreground hover:bg-secondary"
+              className="flex items-center gap-2 rounded-xl border border-input bg-background/70 px-3 py-2 text-xs text-muted-foreground shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-md active:translate-y-0"
             >
               <RefreshCw className={cn("size-4", isSyncing && "animate-spin")} />
               Synced {formatSyncedAgo(syncedAt, now)}
@@ -146,7 +147,7 @@ function Dashboard() {
         </div>
       </header>
 
-      <section className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
+      <section className="sticky top-0 z-10 border-b bg-background/85 shadow-soft backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4">
           <div className="flex flex-wrap items-center gap-3">
             <label className="relative flex-1 min-w-[200px]">
@@ -157,13 +158,13 @@ function Dashboard() {
                 onChange={(e) => setQuery(e.target.value)}
                 aria-label="Search exams"
                 placeholder="Search exam, body or code"
-                className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+                className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
               />
             </label>
             <select
               value={year}
               onChange={(e) => setYear(Number(e.target.value))}
-              className="rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium outline-none focus:ring-2 focus:ring-ring"
+              className="rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
               aria-label="Attempt year"
             >
               {ATTEMPT_YEARS.map((y) => (
@@ -175,7 +176,7 @@ function Dashboard() {
             <select
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="rounded-lg border border-input bg-card px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              className="rounded-lg border border-input bg-card px-3 py-2 text-sm shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
               aria-label="Home state"
             >
               {STATES.map((s) => (
@@ -186,7 +187,7 @@ function Dashboard() {
               type="button"
               onClick={() => setOnlyFollowed((v) => !v)}
               className={cn(
-                "rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
+                "rounded-lg border px-3 py-2 text-sm font-medium shadow-sm transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 active:translate-y-0",
                 onlyFollowed
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-input bg-card hover:bg-secondary",
@@ -217,6 +218,7 @@ function Dashboard() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
+        <ScrollReveal>
         <h2 className="mb-4 text-xl font-semibold tracking-tight">
           Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
         </h2>
@@ -225,7 +227,7 @@ function Dashboard() {
             No exams match these filters yet. Try widening the stream or state.
           </p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {exams.map((exam) => (
               <ExamCard
                 key={exam.slug}
@@ -241,6 +243,7 @@ function Dashboard() {
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.
         </p>
+        </ScrollReveal>
       </div>
     </main>
   );
@@ -260,7 +263,7 @@ function Stat({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-xl border px-3 py-2",
+        "flex items-center gap-2 rounded-xl border bg-background/70 px-3 py-2 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
         tone === "urgent" && value > 0 ? "border-destructive/40 text-destructive" : "text-foreground",
       )}
     >
@@ -285,10 +288,10 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+        "rounded-full border px-3 py-1.5 text-xs font-medium transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 active:translate-y-0",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-input bg-card text-muted-foreground hover:bg-secondary",
+          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+          : "border-input bg-card text-muted-foreground hover:bg-secondary hover:shadow-sm",
       )}
     >
       {children}
