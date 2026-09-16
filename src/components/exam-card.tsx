@@ -4,6 +4,7 @@ import type { Exam } from "@/data/exams";
 import { CATEGORY_META } from "@/data/exams";
 import { IST, formatCountdown, getExamStatus, type StatusKey } from "@/lib/exam-status";
 import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const STATUS_CLASS: Record<StatusKey, string> = {
   upcoming: "bg-secondary text-secondary-foreground",
@@ -25,14 +26,16 @@ export function ExamCard({
   followed: boolean;
   onToggleFollow: (slug: string) => void;
 }) {
+  const cardRef = useScrollReveal<HTMLElement>();
   const status = getExamStatus(exam, now);
   const countdown = status.focus ? formatCountdown(status.focus.start_datetime, now) : undefined;
   const urgent = status.key === "last_48h";
 
   return (
     <article
+      ref={cardRef}
       className={cn(
-        "flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-sm transition-shadow hover:shadow-md",
+        "reveal-on-scroll positive-sheen group flex flex-col gap-4 rounded-2xl border bg-card p-5 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lifted",
         urgent && "border-destructive/40",
       )}
     >
@@ -58,7 +61,7 @@ export function ExamCard({
           onClick={() => onToggleFollow(exam.slug)}
           aria-label={followed ? `Turn off alerts for ${exam.short_code}` : `Get alerts for ${exam.short_code}`}
           className={cn(
-            "shrink-0 rounded-full border p-2 transition-colors",
+            "relative z-[1] shrink-0 rounded-full border p-2 transition-[color,background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-sm active:scale-95",
             followed
               ? "border-primary bg-primary text-primary-foreground"
               : "border-border text-muted-foreground hover:bg-secondary",
@@ -69,7 +72,7 @@ export function ExamCard({
       </header>
 
       {status.focus && countdown ? (
-        <div className="rounded-xl bg-secondary/60 p-3">
+        <div className="relative z-[1] rounded-xl border border-primary/5 bg-secondary/60 p-3 transition-colors duration-300 group-hover:bg-secondary/80">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {status.focusLabel} · {status.focus.label}
             {status.focus.is_tentative ? " (tentative)" : ""}
@@ -113,14 +116,14 @@ export function ExamCard({
           href={exam.application_url}
           target="_blank"
           rel="noreferrer noopener"
-          className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          className="relative z-[1] inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-[transform,box-shadow,opacity] duration-200 hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:translate-y-0"
         >
           Apply now <ExternalLink className="size-3.5" />
         </a>
         <Link
           to="/exam/$slug"
           params={{ slug: exam.slug }}
-          className="inline-flex items-center justify-center rounded-lg border border-input px-3 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+          className="relative z-[1] inline-flex items-center justify-center rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0"
         >
           Details
         </Link>
