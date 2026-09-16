@@ -19,6 +19,7 @@
  */
 
 @theme inline {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -178,6 +179,16 @@
   &[data-visible="true"] {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@utility reveal-grid {
+  & > :nth-child(3n + 2) {
+    transition-delay: 80ms;
+  }
+
+  & > :nth-child(3n + 3) {
+    transition-delay: 160ms;
   }
 }
 
