@@ -7,6 +7,7 @@ import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { RouteError } from "@/components/route-error";
 import { SITE_URL, examDetailJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 const CHECKLIST = [
   { key: "applied", label: "Application submitted" },
@@ -74,11 +75,11 @@ function ExamDetail() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="border-b bg-card">
+      <div className="border-b bg-card/85 shadow-soft backdrop-blur-sm">
         <div className="mx-auto max-w-4xl px-4 py-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-[color,transform] hover:-translate-x-0.5 hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> All exams
           </Link>
@@ -88,7 +89,7 @@ function ExamDetail() {
                 {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
                 {exam.state ? ` · ${exam.state}` : ""}
               </p>
-              <h1 className="mt-1 text-3xl font-bold tracking-tight">{exam.short_code}</h1>
+              <h1 className="mt-1 animate-fade-in text-3xl font-extrabold tracking-tight">{exam.short_code}</h1>
               <p className="text-muted-foreground">{exam.full_name}</p>
               <p className="mt-1 text-sm text-muted-foreground">{exam.conducting_body}</p>
             </div>
@@ -96,7 +97,7 @@ function ExamDetail() {
               type="button"
               onClick={() => follow.toggle(exam.slug)}
               className={cn(
-                "inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors",
+                "inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0",
                 follow.has(exam.slug)
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-input hover:bg-secondary",
@@ -107,7 +108,7 @@ function ExamDetail() {
             </button>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-4 rounded-xl bg-secondary/60 p-4">
+          <div className="positive-sheen mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-primary/10 bg-secondary/60 p-4 shadow-soft">
             <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold">{status.label}</span>
             {upcoming && countdown ? (
               <p className="text-sm">
@@ -123,7 +124,7 @@ function ExamDetail() {
               href={exam.application_url}
               target="_blank"
               rel="noreferrer noopener"
-              className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+              className="relative z-[1] ml-auto inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-[transform,box-shadow,opacity] hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:translate-y-0"
             >
               Apply now <ExternalLink className="size-3.5" />
             </a>
@@ -132,7 +133,7 @@ function ExamDetail() {
       </div>
 
       <div className="mx-auto grid max-w-4xl gap-8 px-4 py-8 lg:grid-cols-[2fr_1fr]">
-        <section>
+        <ScrollReveal className="min-w-0">
           <h2 className="text-lg font-semibold">Full timeline</h2>
           <ol className="mt-4 space-y-3">
             {[...(exam.dates ?? [])]
@@ -146,7 +147,7 @@ function ExamDetail() {
                   <li
                     key={`${date.event_type}-${i}`}
                     className={cn(
-                      "flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3",
+                       "flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
                       past ? "opacity-60" : "bg-card",
                     )}
                   >
@@ -182,10 +183,10 @@ function ExamDetail() {
             <Row label="Exam pattern" value={exam.pattern} />
             <Row label="Streams" value={(exam.streams ?? []).join(" · ")} />
           </dl>
-        </section>
+        </ScrollReveal>
 
-        <aside className="space-y-6">
-          <div className="rounded-xl border bg-card p-4">
+        <ScrollReveal className="space-y-6">
+          <div className="rounded-xl border bg-card p-4 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lifted">
             <h2 className="text-sm font-semibold">Application fee</h2>
             <ul className="mt-3 space-y-2 text-sm">
               {(exam.fees ?? []).map((fee) => (
@@ -199,7 +200,7 @@ function ExamDetail() {
             </ul>
           </div>
 
-          <div className="rounded-xl border bg-card p-4">
+          <div className="rounded-xl border bg-card p-4 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lifted">
             <h2 className="text-sm font-semibold">My application checklist</h2>
             <p className="mt-1 text-xs text-muted-foreground">Saved on this device only.</p>
             <ul className="mt-3 space-y-2">
@@ -225,11 +226,11 @@ function ExamDetail() {
             href={exam.official_website}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium hover:bg-secondary"
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-md active:translate-y-0"
           >
             Official website <ExternalLink className="size-3.5" />
           </a>
-        </aside>
+        </ScrollReveal>
       </div>
     </main>
   );
