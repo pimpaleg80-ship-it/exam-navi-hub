@@ -16,7 +16,11 @@ export function sanitizeRevisions(revisions: unknown): ExamRevision[] {
     if (typeof rev.event_type !== "string" || rev.event_type.length === 0) return false;
     if (typeof rev.year !== "number" || !Number.isInteger(rev.year)) return false;
     if (rev.start_datetime !== undefined && !isValidIso(rev.start_datetime)) return false;
-    if (rev.end_datetime !== undefined && rev.end_datetime !== null && !isValidIso(rev.end_datetime))
+    if (
+      rev.end_datetime !== undefined &&
+      rev.end_datetime !== null &&
+      !isValidIso(rev.end_datetime)
+    )
       return false;
     if (typeof rev.revised_at !== "string") return false;
     return true;
