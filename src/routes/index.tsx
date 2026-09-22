@@ -83,27 +83,29 @@ function Dashboard() {
 
   const exams = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return cycleExams.filter((e) => {
-      if (!e || typeof e.slug !== "string") return false;
-      if (stream !== "all" && !(e.streams ?? []).includes(stream)) return false;
-      if (category !== "all" && e.category !== category) return false;
-      if (state !== "All India" && e.state && e.state !== state) return false;
-      if (onlyFollowed && !follow.has(e.slug)) return false;
-      const haystack = `${e.short_code ?? ""} ${e.full_name ?? ""} ${e.conducting_body ?? ""}`;
-      if (q && !haystack.toLowerCase().includes(q)) return false;
-      return true;
-    }).sort((a, b) => {
-      const am = nextMilestone(a, now);
-      const bm = nextMilestone(b, now);
-      if (!am && !bm) return 0;
-      if (!am) return 1;
-      if (!bm) return -1;
-      const at = new Date(am.start_datetime).getTime();
-      const bt = new Date(bm.start_datetime).getTime();
-      if (Number.isNaN(at)) return 1;
-      if (Number.isNaN(bt)) return -1;
-      return at - bt;
-    });
+    return cycleExams
+      .filter((e) => {
+        if (!e || typeof e.slug !== "string") return false;
+        if (stream !== "all" && !(e.streams ?? []).includes(stream)) return false;
+        if (category !== "all" && e.category !== category) return false;
+        if (state !== "All India" && e.state && e.state !== state) return false;
+        if (onlyFollowed && !follow.has(e.slug)) return false;
+        const haystack = `${e.short_code ?? ""} ${e.full_name ?? ""} ${e.conducting_body ?? ""}`;
+        if (q && !haystack.toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const am = nextMilestone(a, now);
+        const bm = nextMilestone(b, now);
+        if (!am && !bm) return 0;
+        if (!am) return 1;
+        if (!bm) return -1;
+        const at = new Date(am.start_datetime).getTime();
+        const bt = new Date(bm.start_datetime).getTime();
+        if (Number.isNaN(at)) return 1;
+        if (Number.isNaN(bt)) return -1;
+        return at - bt;
+      });
   }, [cycleExams, stream, category, state, query, onlyFollowed, follow, now]);
 
   const openCount = exams.filter((e) => {
@@ -127,8 +129,16 @@ function Dashboard() {
             correction slots, admit cards and results, all on IST.
           </p>
           <div className="mt-5 flex animate-fade-in flex-wrap gap-3 text-sm">
-            <Stat icon={<CalendarClock className="size-4" />} label="Exams tracked" value={cycleExams.length} />
-            <Stat icon={<ShieldCheck className="size-4" />} label="Registration open" value={openCount} />
+            <Stat
+              icon={<CalendarClock className="size-4" />}
+              label="Exams tracked"
+              value={cycleExams.length}
+            />
+            <Stat
+              icon={<ShieldCheck className="size-4" />}
+              label="Registration open"
+              value={openCount}
+            />
             <Stat
               icon={<CalendarClock className="size-4" />}
               label="Closing in 48 hrs"
@@ -198,7 +208,9 @@ function Dashboard() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Chip active={stream === "all"} onClick={() => setStream("all")}>All streams</Chip>
+            <Chip active={stream === "all"} onClick={() => setStream("all")}>
+              All streams
+            </Chip>
             {STREAMS.map((s) => (
               <Chip key={s} active={stream === s} onClick={() => setStream(s)}>
                 {s}
@@ -207,7 +219,9 @@ function Dashboard() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Chip active={category === "all"} onClick={() => setCategory("all")}>All categories</Chip>
+            <Chip active={category === "all"} onClick={() => setCategory("all")}>
+              All categories
+            </Chip>
             {CATEGORIES.map((c) => (
               <Chip key={c} active={category === c} onClick={() => setCategory(c)}>
                 {CATEGORY_META[c].label}
@@ -219,30 +233,30 @@ function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <ScrollReveal>
-        <h2 className="mb-4 text-xl font-semibold tracking-tight">
-          Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
-        </h2>
-        {exams.length === 0 ? (
-          <p className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
-            No exams match these filters yet. Try widening the stream or state.
+          <h2 className="mb-4 text-xl font-semibold tracking-tight">
+            Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
+          </h2>
+          {exams.length === 0 ? (
+            <p className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
+              No exams match these filters yet. Try widening the stream or state.
+            </p>
+          ) : (
+            <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {exams.map((exam) => (
+                <ExamCard
+                  key={exam.slug}
+                  exam={exam}
+                  now={now}
+                  followed={follow.has(exam.slug)}
+                  onToggleFollow={follow.toggle}
+                />
+              ))}
+            </div>
+          )}
+          <p className="mt-8 text-xs text-muted-foreground">
+            Dates marked tentative are planning estimates until the official bulletin is published.
+            Always confirm on the conducting body's website before paying a fee.
           </p>
-        ) : (
-          <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {exams.map((exam) => (
-              <ExamCard
-                key={exam.slug}
-                exam={exam}
-                now={now}
-                followed={follow.has(exam.slug)}
-                onToggleFollow={follow.toggle}
-              />
-            ))}
-          </div>
-        )}
-        <p className="mt-8 text-xs text-muted-foreground">
-          Dates marked tentative are planning estimates until the official bulletin is published.
-          Always confirm on the conducting body's website before paying a fee.
-        </p>
         </ScrollReveal>
       </div>
     </main>
@@ -264,7 +278,9 @@ function Stat({
     <div
       className={cn(
         "flex items-center gap-2 rounded-xl border bg-background/70 px-3 py-2 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
-        tone === "urgent" && value > 0 ? "border-destructive/40 text-destructive" : "text-foreground",
+        tone === "urgent" && value > 0
+          ? "border-destructive/40 text-destructive"
+          : "text-foreground",
       )}
     >
       {icon}

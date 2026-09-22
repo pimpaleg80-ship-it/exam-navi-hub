@@ -22,22 +22,34 @@ export const REGISTRATION_TRIGGERS: TriggerOffset[] = [
   {
     key: "T-30D",
     leadMs: 30 * DAY,
-    template: (n) => ({ title: `Registration open for ${n}`, body: `Applications are live. Apply early to avoid portal load.` }),
+    template: (n) => ({
+      title: `Registration open for ${n}`,
+      body: `Applications are live. Apply early to avoid portal load.`,
+    }),
   },
   {
     key: "T-7D",
     leadMs: 7 * DAY,
-    template: (n) => ({ title: `1 week left to apply for ${n}`, body: `Registration closes in 7 days.` }),
+    template: (n) => ({
+      title: `1 week left to apply for ${n}`,
+      body: `Registration closes in 7 days.`,
+    }),
   },
   {
     key: "T-48H",
     leadMs: 48 * HOUR,
-    template: (n) => ({ title: `48 hours left — ${n}`, body: `Two days to submit your ${n} application.` }),
+    template: (n) => ({
+      title: `48 hours left — ${n}`,
+      body: `Two days to submit your ${n} application.`,
+    }),
   },
   {
     key: "T-12H",
     leadMs: 12 * HOUR,
-    template: (n) => ({ title: `Urgent: ${n} registration closes tonight`, body: `The portal shuts at 11:50 PM IST. Finish payment now.` }),
+    template: (n) => ({
+      title: `Urgent: ${n} registration closes tonight`,
+      body: `The portal shuts at 11:50 PM IST. Finish payment now.`,
+    }),
   },
 ];
 
@@ -102,7 +114,11 @@ export function shouldDeliverNow(opts: {
 }): { deliver: boolean; deferTo?: Date } {
   if (opts.isDreamExam) return { deliver: true };
   const hour = Number(
-    new Intl.DateTimeFormat("en-GB", { hour: "2-digit", hour12: false, timeZone: "Asia/Kolkata" }).format(opts.at),
+    new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Kolkata",
+    }).format(opts.at),
   );
   const inDnd =
     opts.dndStartHour <= opts.dndEndHour

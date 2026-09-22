@@ -8,15 +8,15 @@ Act as a Principal Full-Stack Engineer and Product Architect. Build an end-to-en
 
 The app must catalog and filter competitive exams across these five primary categories:
 
-* **Engineering (PCM):** JEE Main, JEE Advanced, BITSAT, VITEEE, SRMJEEE, MET, AEEE.
+- **Engineering (PCM):** JEE Main, JEE Advanced, BITSAT, VITEEE, SRMJEEE, MET, AEEE.
 
-* **Medical & Allied Sciences (PCB):** NEET-UG, ICAR AIEEA-UG, AIIMS Paramedical/B.Sc. Nursing, NEST.
+- **Medical & Allied Sciences (PCB):** NEET-UG, ICAR AIEEA-UG, AIIMS Paramedical/B.Sc. Nursing, NEST.
 
-* **Defense & Armed Forces (PCM/PCMB):** NDA & NA (I & II), Indian Army TES, AFCAT (post-12th schemes/entry).
+- **Defense & Armed Forces (PCM/PCMB):** NDA & NA (I & II), Indian Army TES, AFCAT (post-12th schemes/entry).
 
-* **Research & Pure Sciences (PCMB):** IISER Aptitude Test (IAT), NEST (NISER/UM-DAE CEBS), ISI Admission Test, CMI Entrance Exam.
+- **Research & Pure Sciences (PCMB):** IISER Aptitude Test (IAT), NEST (NISER/UM-DAE CEBS), ISI Admission Test, CMI Entrance Exam.
 
-* **State CETs & Regional Entrances:** MHT CET (MH), KCET & COMEDK (KA), WBJEE (WB), TS EAMCET/TG EAPCET, AP EAPCET, KEAM (KL), GUJCET (GJ), OJEE (OD), BCECE (BR).
+- **State CETs & Regional Entrances:** MHT CET (MH), KCET & COMEDK (KA), WBJEE (WB), TS EAMCET/TG EAPCET, AP EAPCET, KEAM (KL), GUJCET (GJ), OJEE (OD), BCECE (BR).
 
 ---
 
@@ -24,63 +24,63 @@ The app must catalog and filter competitive exams across these five primary cate
 
 1. **Student Onboarding & Personalization:**
 
-   * Stream selection: PCM, PCB, PCMB.
+   - Stream selection: PCM, PCB, PCMB.
 
-   * State of domicile selection (for regional quota and state CET alerts).
+   - State of domicile selection (for regional quota and state CET alerts).
 
-   * Target career pathways (Engineering, MBBS/BDS, Pure Science/Research, Defense, Paramedical).
+   - Target career pathways (Engineering, MBBS/BDS, Pure Science/Research, Defense, Paramedical).
 
-   * Toggle to follow specific exams and hide irrelevant ones.
+   - Toggle to follow specific exams and hide irrelevant ones.
 
 2. **Smart Deadline & Event Tracker:**
 
-   * Track sequential stages for each exam:
+   - Track sequential stages for each exam:
 
-     * Notification Released / Information Bulletin Out
+     - Notification Released / Information Bulletin Out
 
-     * Registration Opens & Closes (with late-fee window)
+     - Registration Opens & Closes (with late-fee window)
 
-     * Correction Window Open & Close
+     - Correction Window Open & Close
 
-     * City Intimation Slip & Admit Card Release
+     - City Intimation Slip & Admit Card Release
 
-     * Exam Dates (Phases/Sessions)
+     - Exam Dates (Phases/Sessions)
 
-     * Provisional Answer Key & Challenge Window
+     - Provisional Answer Key & Challenge Window
 
-     * Final Result & Counseling Registration
+     - Final Result & Counseling Registration
 
-   * Visual status pill indicators: `Upcoming`, `Registration Open`, `Last 48 Hours`, `Closed`, `Admit Card Live`.
+   - Visual status pill indicators: `Upcoming`, `Registration Open`, `Last 48 Hours`, `Closed`, `Admit Card Live`.
 
 3. **Notification Engine & Trigger Rules:**
 
-   * Notification channels: In-App push notifications (FCM), optional WhatsApp/SMS integration.
+   - Notification channels: In-App push notifications (FCM), optional WhatsApp/SMS integration.
 
-   * Automated reminder triggers:
+   - Automated reminder triggers:
 
-     * **T-30 days / Announcement:** "Registration open for [Exam Name]"
+     - **T-30 days / Announcement:** "Registration open for [Exam Name]"
 
-     * **T-7 days:** "1 week left to apply"
+     - **T-7 days:** "1 week left to apply"
 
-     * **T-48 hours & T-12 hours:** "Urgent: Registration closes tonight at 11:50 PM"
+     - **T-48 hours & T-12 hours:** "Urgent: Registration closes tonight at 11:50 PM"
 
-     * **Event-based triggers:** Immediate push when Admit Card or Answer Key is published.
+     - **Event-based triggers:** Immediate push when Admit Card or Answer Key is published.
 
-   * DND & Priority filters: Allow users to mark 3 "Dream Exams" for high-priority bypass notifications.
+   - DND & Priority filters: Allow users to mark 3 "Dream Exams" for high-priority bypass notifications.
 
 4. **Exam Detail Page (Knowledge Hub):**
 
-   * Direct, verified one-click link to the official application portal (e.g., jeemain.nta.nic.in, neet.nta.online).
+   - Direct, verified one-click link to the official application portal (e.g., jeemain.nta.nic.in, neet.nta.online).
 
-   * Quick-glance card: Eligibility criteria (minimum % in 12th, age limits, compulsory subjects), application fee (General/OBC/SC/ST/Female), exam pattern (duration, negative marking, mode: CBT/OMR).
+   - Quick-glance card: Eligibility criteria (minimum % in 12th, age limits, compulsory subjects), application fee (General/OBC/SC/ST/Female), exam pattern (duration, negative marking, mode: CBT/OMR).
 
-   * Syllabus PDF and previous year official bulletin downloads.
+   - Syllabus PDF and previous year official bulletin downloads.
 
 5. **Personal Application Tracker:**
 
-   * Local user checklist: "Applied", "Fee Paid", "Admit Card Downloaded".
+   - Local user checklist: "Applied", "Fee Paid", "Admit Card Downloaded".
 
-   * Note-taking field for Application Number and Login ID storage (stored locally/encrypted on-device).
+   - Note-taking field for Application Number and Login ID storage (stored locally/encrypted on-device).
 
 ---
 
@@ -88,27 +88,27 @@ The app must catalog and filter competitive exams across these five primary cate
 
 Design a relational schema (PostgreSQL / Supabase Prisma schema) containing:
 
-* `exams`: id, slug, full_name, short_code, category, conducting_body (NTA, UPSC, State Cell), official_website, application_url, eligibility_summary.
+- `exams`: id, slug, full_name, short_code, category, conducting_body (NTA, UPSC, State Cell), official_website, application_url, eligibility_summary.
 
-* `exam_dates`: id, exam_id, event_type (ENUM), start_datetime, end_datetime, is_tentative, is_extended.
+- `exam_dates`: id, exam_id, event_type (ENUM), start_datetime, end_datetime, is_tentative, is_extended.
 
-* `exam_fees`: id, exam_id, category_label, amount, currency.
+- `exam_fees`: id, exam_id, category_label, amount, currency.
 
-* `user_preferences`: user_id, stream (PCM/PCB/PCMB), home_state, followed_exam_ids.
+- `user_preferences`: user_id, stream (PCM/PCB/PCMB), home_state, followed_exam_ids.
 
-* `notifications_queue`: id, user_id, exam_id, scheduled_at, sent_at, channel, payload, status.
+- `notifications_queue`: id, user_id, exam_id, scheduled_at, sent_at, channel, payload, status.
 
 ---
 
 ### 4. Technical Stack & Implementation Deliverables
 
-* **Frontend:** React Native (Expo) or Next.js 14 App Router + Tailwind CSS + Shadcn UI.
+- **Frontend:** React Native (Expo) or Next.js 14 App Router + Tailwind CSS + Shadcn UI.
 
-* **Backend:** Node.js (Fastify/Express) or Next.js Server Actions + Supabase (PostgreSQL + Auth + Row Level Security).
+- **Backend:** Node.js (Fastify/Express) or Next.js Server Actions + Supabase (PostgreSQL + Auth + Row Level Security).
 
-* **Scheduled Jobs:** Cron workers (Inngest / Upstash QStash / BullMQ) to evaluate deadline timestamps every hour and dispatch queued push notifications via Firebase Cloud Messaging (FCM).
+- **Scheduled Jobs:** Cron workers (Inngest / Upstash QStash / BullMQ) to evaluate deadline timestamps every hour and dispatch queued push notifications via Firebase Cloud Messaging (FCM).
 
-* **Admin / Scraper CMS:** A lightweight admin panel where admins can add or modify dates, toggle `is_tentative` to `confirmed`, and send blast announcements.
+- **Admin / Scraper CMS:** A lightweight admin panel where admins can add or modify dates, toggle `is_tentative` to `confirmed`, and send blast announcements.
 
 ---
 

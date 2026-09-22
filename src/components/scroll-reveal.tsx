@@ -7,11 +7,7 @@ type ScrollRevealProps = {
   className?: string;
 } & Omit<HTMLAttributes<HTMLDivElement>, "children" | "className">;
 
-export function ScrollReveal({
-  children,
-  className,
-  ...props
-}: ScrollRevealProps) {
+export function ScrollReveal({ children, className, ...props }: ScrollRevealProps) {
   const ref = useScrollReveal<HTMLDivElement>();
 
   return (
