@@ -197,36 +197,47 @@ function Dashboard() {
               </Link>
             </div>
           </div>
-          <div className="relative hidden min-h-[360px] lg:block" aria-hidden="true">
+          <div className="relative hidden min-h-[390px] lg:block">
             <div className="absolute inset-4 rotate-2 border border-[#41658d] bg-[#102b4d] shadow-[12px_12px_0_#2d64eb]" />
-            <div className="absolute inset-0 overflow-hidden border border-[#6e8aaa] bg-[#173a62] p-6">
-              <div className="flex items-center justify-between border-b border-white/20 pb-4">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c5d1e1]">
-                  Live exam radar
-                </span>
-                <span className="size-2 animate-pulse rounded-full bg-[#58d68d]" />
-              </div>
-              <div className="mt-8 space-y-4">
-                {[
-                  ["JEE Main", "Registration opens", "28 Oct 2026"],
-                  ["NEET UG", "Application deadline", "07 Mar 2027"],
-                  ["UPSC CSE", "Prelims examination", "30 May 2027"],
-                ].map(([name, event, date]) => (
-                  <div
-                    key={name}
-                    className="flex items-center justify-between gap-3 border border-white/10 bg-[#0b2341] p-4"
-                  >
-                    <div>
-                      <p className="font-bold text-white">{name}</p>
-                      <p className="mt-1 text-xs text-[#aebed3]">{event}</p>
+            <div className="absolute inset-0 overflow-hidden border border-[#6e8aaa] bg-[#173a62]">
+              <img
+                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85"
+                alt="Students studying together around a table"
+                width={1200}
+                height={800}
+                fetchPriority="high"
+                className="absolute inset-0 size-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#081a33] via-[#081a33]/40 to-transparent" />
+              <div className="absolute inset-x-5 bottom-5">
+                <div className="flex items-center justify-between border-b border-white/25 pb-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
+                    Live exam radar
+                  </span>
+                  <span className="flex items-center gap-2 text-xs font-semibold text-white">
+                    <span className="size-2 animate-pulse rounded-full bg-[#58d68d]" /> Updated
+                    today
+                  </span>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {[
+                    ["JEE Main", "28 Oct 2026"],
+                    ["NEET UG", "07 Mar 2027"],
+                    ["UPSC CSE", "30 May 2027"],
+                  ].map(([name, date]) => (
+                    <div
+                      key={name}
+                      className="border border-white/15 bg-[#081a33]/85 p-3 backdrop-blur-sm"
+                    >
+                      <p className="text-xs font-bold text-white">{name}</p>
+                      <p className="mt-1 text-[10px] font-semibold text-[#9fc0ff]">{date}</p>
                     </div>
-                    <p className="shrink-0 text-right text-xs font-bold text-[#6fa0ff]">{date}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#aebed3]">
-                <CalendarClock className="size-4 text-[#2d64eb]" /> Dates in IST · Official portals
-                linked
+                  ))}
+                </div>
+                <div className="mt-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#d0dbea]">
+                  <CalendarClock className="size-3.5 text-[#6fa0ff]" /> Dates in IST · Official
+                  portals linked
+                </div>
               </div>
             </div>
           </div>
