@@ -5,10 +5,13 @@ export function SiteFooter() {
   return (
     <footer className="border-t bg-card/60">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>
-          © {new Date().getFullYear()} {SITE_NAME}. Exam dates are for guidance — always verify on
-          official websites.
-        </p>
+        <div className="space-y-1">
+          <p>
+            © {new Date().getFullYear()} {SITE_NAME}. All rights reserved. A product by{" "}
+            <span className="font-semibold text-foreground">H Tech Solutions</span>.
+          </p>
+          <p>Exam dates are for guidance — always verify on official websites.</p>
+        </div>
         <nav className="flex flex-wrap gap-4">
           <Link to="/about" className="hover:text-foreground">
             About
