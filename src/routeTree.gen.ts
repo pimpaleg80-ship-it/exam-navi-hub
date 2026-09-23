@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as GovernmentRouteImport } from './routes/government'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -37,6 +38,11 @@ const AdsDottxtRoute = AdsDottxtRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovernmentRoute = GovernmentRouteImport.update({
+  id: '/government',
+  path: '/government',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
+  '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
+  '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
+  '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ads.txt'
     | '/contact'
+    | '/government'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ads.txt'
     | '/contact'
+    | '/government'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/ads.txt'
     | '/contact'
+    | '/government'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdsDottxtRoute: typeof AdsDottxtRoute
   ContactRoute: typeof ContactRoute
+  GovernmentRoute: typeof GovernmentRoute
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -176,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/government': {
+      id: '/government'
+      path: '/government'
+      fullPath: '/government'
+      preLoaderRoute: typeof GovernmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdsDottxtRoute: AdsDottxtRoute,
   ContactRoute: ContactRoute,
+  GovernmentRoute: GovernmentRoute,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,

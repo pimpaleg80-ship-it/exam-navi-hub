@@ -1,4 +1,4 @@
-export const SITE_NAME = "EduAlert PCMB";
+export const SITE_NAME = "EXAM ALERT INDIA";
 /** Public contact email shown on Contact / Privacy pages (required for AdSense approval). */
 export const CONTACT_EMAIL = "pimpaleharshad99@gmail.com";
 export const LAST_UPDATED = "23 September 2026";
