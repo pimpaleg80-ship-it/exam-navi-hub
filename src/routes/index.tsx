@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, CalendarClock, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Bell,
+  CalendarClock,
+  RefreshCw,
+  Search,
+  ShieldCheck,
+} from "lucide-react";
 import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
@@ -117,60 +125,131 @@ function Dashboard() {
   const urgentCount = exams.filter((e) => getExamStatus(e, now).key === "last_48h").length;
 
   return (
-    <main className="min-h-screen bg-background">
-      <header className="border-b bg-card/85 shadow-soft backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="animate-fade-in text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                EXAM ALERT INDIA
-              </p>
-              <h1 className="mt-2 animate-fade-in text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Every PCMB entrance deadline, in one countdown.
-              </h1>
-            </div>
+    <main className="min-h-screen overflow-x-hidden bg-background">
+      <header className="border-b border-white/10 bg-[#081a33] text-white shadow-[0_18px_50px_-28px_rgba(8,26,51,0.75)]">
+        <nav className="border-b border-slate-200 bg-white text-[#081a33]">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-8">
             <Link
-              to="/government"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2 text-sm font-semibold text-primary shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/15"
+              to="/"
+              className="group inline-flex items-center gap-3"
+              aria-label="EXAM ALERT INDIA home"
             >
-              Government exams
-              <ArrowUpRight className="size-4" />
+              <span className="grid size-10 place-items-center bg-[#2d64eb] text-white shadow-[4px_4px_0_#081a33]">
+                <Bell className="size-5" strokeWidth={2.5} />
+              </span>
+              <span className="text-lg font-black tracking-[-0.06em] sm:text-xl">
+                EXAM<span className="text-[#2d64eb]"> ALERT INDIA</span>
+              </span>
             </Link>
+            <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] md:flex">
+              <a href="#exams" className="transition-colors hover:text-[#2d64eb]">
+                Exams
+              </a>
+              <a href="#updates" className="transition-colors hover:text-[#2d64eb]">
+                Latest updates
+              </a>
+              <a href="#how-it-works" className="transition-colors hover:text-[#2d64eb]">
+                How it works
+              </a>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <a
+                href="#exams"
+                className="hidden text-xs font-bold uppercase tracking-[0.18em] hover:text-[#2d64eb] sm:inline"
+              >
+                Track exams
+              </a>
+              <Link
+                to="/government"
+                className="inline-flex items-center gap-2 bg-[#2d64eb] px-3 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white shadow-[4px_4px_0_#081a33] transition hover:-translate-y-0.5 hover:bg-[#2456d1]"
+              >
+                Govt. exams <ArrowUpRight className="size-3.5" />
+              </Link>
+            </div>
           </div>
-          <p className="mt-2 max-w-2xl animate-fade-in text-sm text-muted-foreground sm:text-base">
-            Engineering, medical, defense, research and state CET exams — registration windows,
-            correction slots, admit cards and results, all on IST.
-          </p>
-          <div className="mt-5 flex animate-fade-in flex-wrap gap-3 text-sm">
-            <Stat
-              icon={<CalendarClock className="size-4" />}
-              label="Exams tracked"
-              value={cycleExams.length}
-            />
-            <Stat
-              icon={<ShieldCheck className="size-4" />}
-              label="Registration open"
-              value={openCount}
-            />
-            <Stat
-              icon={<CalendarClock className="size-4" />}
-              label="Closing in 48 hrs"
-              value={urgentCount}
-              tone={urgentCount > 0 ? "urgent" : "default"}
-            />
-            <button
-              type="button"
-              onClick={() => refresh()}
-              className="flex items-center gap-2 rounded-xl border border-input bg-background/70 px-3 py-2 text-xs text-muted-foreground shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-md active:translate-y-0"
-            >
-              <RefreshCw className={cn("size-4", isSyncing && "animate-spin")} />
-              Synced {formatSyncedAgo(syncedAt, now)}
-            </button>
+        </nav>
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          <div>
+            <p className="animate-fade-in text-xs font-bold uppercase tracking-[0.24em] text-[#b5c4d9]">
+              <span className="mr-2 inline-block size-3 bg-[#2d64eb] align-[-1px]" />
+              Centralized exam intelligence · India
+            </p>
+            <h1 className="mt-7 max-w-3xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.065em] text-white text-balance sm:text-7xl lg:text-[6.6rem]">
+              Never miss an
+              <span className="mt-2 block w-fit bg-[#2d64eb] px-2 pb-3 pt-1">exam update</span>
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-[#c5d1e1] sm:text-lg">
+              JEE Main, NEET, MHT-CET, IISER, NEST, CUET, NDA, UPSC, SSC, Railways and Banking —
+              every official date, notice and result, verified and in one place.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#exams"
+                className="inline-flex items-center gap-2 bg-[#2d64eb] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[5px_5px_0_#061227] transition hover:-translate-y-0.5 hover:bg-[#2456d1]"
+              >
+                Browse exams <ArrowRight className="size-4" />
+              </a>
+              <Link
+                to="/government"
+                className="inline-flex items-center gap-2 border border-white/70 px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-[#081a33]"
+              >
+                Government & civil services
+              </Link>
+            </div>
           </div>
+          <div className="relative hidden min-h-[360px] lg:block" aria-hidden="true">
+            <div className="absolute inset-4 rotate-2 border border-[#41658d] bg-[#102b4d] shadow-[12px_12px_0_#2d64eb]" />
+            <div className="absolute inset-0 overflow-hidden border border-[#6e8aaa] bg-[#173a62] p-6">
+              <div className="flex items-center justify-between border-b border-white/20 pb-4">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c5d1e1]">
+                  Live exam radar
+                </span>
+                <span className="size-2 animate-pulse rounded-full bg-[#58d68d]" />
+              </div>
+              <div className="mt-8 space-y-4">
+                {[
+                  ["JEE Main", "Registration opens", "28 Oct 2026"],
+                  ["NEET UG", "Application deadline", "07 Mar 2027"],
+                  ["UPSC CSE", "Prelims examination", "30 May 2027"],
+                ].map(([name, event, date]) => (
+                  <div
+                    key={name}
+                    className="flex items-center justify-between gap-3 border border-white/10 bg-[#0b2341] p-4"
+                  >
+                    <div>
+                      <p className="font-bold text-white">{name}</p>
+                      <p className="mt-1 text-xs text-[#aebed3]">{event}</p>
+                    </div>
+                    <p className="shrink-0 text-right text-xs font-bold text-[#6fa0ff]">{date}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#aebed3]">
+                <CalendarClock className="size-4 text-[#2d64eb]" /> Dates in IST · Official portals
+                linked
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px border-t border-white/10 bg-white/10 sm:grid-cols-4">
+          <HeroStat value={cycleExams.length} label="Exams tracked" />
+          <HeroStat value={openCount} label="Registration open" />
+          <HeroStat value={urgentCount} label="Closing in 48 hrs" />
+          <button
+            type="button"
+            onClick={() => refresh()}
+            className="flex items-center justify-center gap-2 bg-[#081a33] px-3 py-4 text-xs font-bold uppercase tracking-[0.1em] text-[#c5d1e1] transition hover:bg-[#102b4d]"
+          >
+            <RefreshCw className={cn("size-4 text-[#6fa0ff]", isSyncing && "animate-spin")} />
+            Synced {formatSyncedAgo(syncedAt, now)}
+          </button>
         </div>
       </header>
 
-      <section className="sticky top-0 z-10 border-b bg-background/85 shadow-soft backdrop-blur-xl">
+      <section
+        id="exams"
+        className="sticky top-0 z-10 border-b bg-background/95 shadow-soft backdrop-blur-xl"
+      >
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4">
           <div className="flex flex-wrap items-center gap-3">
             <label className="relative flex-1 min-w-[200px]">
@@ -246,7 +325,7 @@ function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <ScrollReveal>
-          <h2 className="mb-4 text-xl font-semibold tracking-tight">
+          <h2 id="updates" className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight">
             Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
           </h2>
           {exams.length === 0 ? (
@@ -267,13 +346,24 @@ function Dashboard() {
             </div>
           )}
           <AdSlot slot={AD_SLOTS.homeInFeed} className="mt-8" />
-          <p className="mt-8 text-xs text-muted-foreground">
+          <p id="how-it-works" className="mt-8 scroll-mt-24 text-xs text-muted-foreground">
             Dates marked tentative are planning estimates until the official bulletin is published.
             Always confirm on the conducting body's website before paying a fee.
           </p>
         </ScrollReveal>
       </div>
     </main>
+  );
+}
+
+function HeroStat({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="bg-[#081a33] px-4 py-4 text-center sm:text-left">
+      <p className="text-2xl font-black tabular-nums text-white">{value}</p>
+      <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#aebed3]">
+        {label}
+      </p>
+    </div>
   );
 }
 
