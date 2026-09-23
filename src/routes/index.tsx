@@ -1,14 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Bell,
-  CalendarClock,
-  RefreshCw,
-  Search,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Bell, CalendarClock, RefreshCw, Search } from "lucide-react";
 import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
@@ -125,7 +117,7 @@ function Dashboard() {
   const urgentCount = exams.filter((e) => getExamStatus(e, now).key === "last_48h").length;
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-background">
+    <main className="min-h-screen overflow-x-hidden bg-[#081a33]">
       <header className="border-b border-white/10 bg-[#081a33] text-white shadow-[0_18px_50px_-28px_rgba(8,26,51,0.75)]">
         <nav className="border-b border-slate-200 bg-white text-[#081a33]">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-8">
@@ -259,7 +251,7 @@ function Dashboard() {
 
       <section
         id="exams"
-        className="sticky top-0 z-10 border-b bg-background/95 shadow-soft backdrop-blur-xl"
+        className="sticky top-0 z-10 border-b border-white/10 bg-[#081a33]/95 text-white shadow-soft backdrop-blur-xl"
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4">
           <div className="flex flex-wrap items-center gap-3">
@@ -271,13 +263,13 @@ function Dashboard() {
                 onChange={(e) => setQuery(e.target.value)}
                 aria-label="Search exams"
                 placeholder="Search exam, body or code"
-                className="w-full rounded-lg border border-input bg-card py-2 pl-9 pr-3 text-sm shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
+                className="w-full rounded-lg border border-white/20 bg-[#102b4d] py-2 pl-9 pr-3 text-sm text-white shadow-sm outline-none placeholder:text-[#aebed3] transition-[border-color,box-shadow] focus:border-[#6fa0ff] focus:ring-2 focus:ring-[#6fa0ff]/30"
               />
             </label>
             <select
               value={year}
               onChange={(e) => setYear(Number(e.target.value))}
-              className="rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
+              className="rounded-lg border border-white/20 bg-[#102b4d] px-3 py-2 text-sm font-medium text-white shadow-sm outline-none transition-[border-color,box-shadow] focus:border-[#6fa0ff] focus:ring-2 focus:ring-[#6fa0ff]/30"
               aria-label="Attempt year"
             >
               {ATTEMPT_YEARS.map((y) => (
@@ -289,7 +281,7 @@ function Dashboard() {
             <select
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="rounded-lg border border-input bg-card px-3 py-2 text-sm shadow-sm outline-none transition-[border-color,box-shadow] focus:border-primary/50 focus:ring-2 focus:ring-ring/30"
+              className="rounded-lg border border-white/20 bg-[#102b4d] px-3 py-2 text-sm text-white shadow-sm outline-none transition-[border-color,box-shadow] focus:border-[#6fa0ff] focus:ring-2 focus:ring-[#6fa0ff]/30"
               aria-label="Home state"
             >
               {STATES.map((s) => (
@@ -303,7 +295,7 @@ function Dashboard() {
                 "rounded-lg border px-3 py-2 text-sm font-medium shadow-sm transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 active:translate-y-0",
                 onlyFollowed
                   ? "border-primary bg-primary text-primary-foreground"
-                  : "border-input bg-card hover:bg-secondary",
+                  : "border-white/20 bg-[#102b4d] text-white hover:bg-[#173a62]",
               )}
             >
               My alerts ({follow.items.length})
@@ -336,11 +328,14 @@ function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <ScrollReveal>
-          <h2 id="updates" className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight">
+          <h2
+            id="updates"
+            className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white"
+          >
             Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
           </h2>
           {exams.length === 0 ? (
-            <p className="rounded-2xl border border-dashed p-10 text-center text-sm text-muted-foreground">
+            <p className="rounded-2xl border border-dashed border-white/20 bg-[#102b4d] p-10 text-center text-sm text-[#c5d1e1]">
               No exams match these filters yet. Try widening the stream or state.
             </p>
           ) : (
@@ -357,7 +352,7 @@ function Dashboard() {
             </div>
           )}
           <AdSlot slot={AD_SLOTS.homeInFeed} className="mt-8" />
-          <p id="how-it-works" className="mt-8 scroll-mt-24 text-xs text-muted-foreground">
+          <p id="how-it-works" className="mt-8 scroll-mt-24 text-xs text-[#aebed3]">
             Dates marked tentative are planning estimates until the official bulletin is published.
             Always confirm on the conducting body's website before paying a fee.
           </p>
@@ -374,33 +369,6 @@ function HeroStat({ value, label }: { value: number; label: string }) {
       <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#aebed3]">
         {label}
       </p>
-    </div>
-  );
-}
-
-function Stat({
-  icon,
-  label,
-  value,
-  tone = "default",
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  tone?: "default" | "urgent";
-}) {
-  return (
-    <div
-      className={cn(
-        "flex items-center gap-2 rounded-xl border bg-background/70 px-3 py-2 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
-        tone === "urgent" && value > 0
-          ? "border-destructive/40 text-destructive"
-          : "text-foreground",
-      )}
-    >
-      {icon}
-      <span className="text-lg font-bold tabular-nums">{value}</span>
-      <span className="text-xs text-muted-foreground">{label}</span>
     </div>
   );
 }
@@ -422,7 +390,7 @@ function Chip({
         "rounded-full border px-3 py-1.5 text-xs font-medium transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 active:translate-y-0",
         active
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
-          : "border-input bg-card text-muted-foreground hover:bg-secondary hover:shadow-sm",
+          : "border-white/20 bg-[#102b4d] text-[#c5d1e1] hover:bg-[#173a62] hover:text-white hover:shadow-sm",
       )}
     >
       {children}
