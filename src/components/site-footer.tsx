@@ -10,7 +10,13 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved. A product by{" "}
             <span className="font-semibold text-white">H Tech Solutions</span>.
           </p>
-          <p>Exam dates are for guidance — always verify on official websites.</p>
+          <p className="max-w-2xl leading-5">
+            <span className="font-semibold text-white">Disclaimer:</span> EXAM ALERT INDIA is an
+            independent information platform and is not a government website, department, agency, or
+            official examination portal. Information and dates are provided for general guidance
+            only. Always re-check the latest notification, eligibility, deadline, fee, and result
+            details on the particular official website before taking action.
+          </p>
         </div>
         <nav className="flex flex-wrap gap-4">
           <Link to="/about" className="hover:text-white">
