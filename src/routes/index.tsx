@@ -137,9 +137,6 @@ function Dashboard() {
               <a href="#exams" className="transition-colors hover:text-[#2d64eb]">
                 Exams
               </a>
-              <a href="#updates" className="transition-colors hover:text-[#2d64eb]">
-                Latest updates
-              </a>
               <a href="#how-it-works" className="transition-colors hover:text-[#2d64eb]">
                 How it works
               </a>
@@ -328,10 +325,7 @@ function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <ScrollReveal>
-          <h2
-            id="updates"
-            className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white"
-          >
+          <h2 className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white">
             Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
           </h2>
           {exams.length === 0 ? (
