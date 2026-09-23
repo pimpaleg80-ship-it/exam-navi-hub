@@ -10,7 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ExamSlugRouteImport } from './routes/exam.$slug'
 import { Route as ApiPublicCronDispatchNotificationsRouteImport } from './routes/api/public/cron/dispatch-notifications'
 
@@ -19,9 +24,34 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdsDottxtRoute = AdsDottxtRouteImport.update({
+  id: '/ads.txt',
+  path: '/ads.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExamSlugRoute = ExamSlugRouteImport.update({
@@ -38,20 +68,35 @@ const ApiPublicCronDispatchNotificationsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/ads.txt': typeof AdsDottxtRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/ads.txt': typeof AdsDottxtRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/ads.txt': typeof AdsDottxtRoute
+  '/contact': typeof ContactRoute
+  '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
@@ -59,26 +104,46 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/ads.txt'
+    | '/contact'
+    | '/privacy'
     | '/sitemap.xml'
+    | '/terms'
     | '/exam/$slug'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/ads.txt'
+    | '/contact'
+    | '/privacy'
     | '/sitemap.xml'
+    | '/terms'
     | '/exam/$slug'
     | '/api/public/cron/dispatch-notifications'
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/ads.txt'
+    | '/contact'
+    | '/privacy'
     | '/sitemap.xml'
+    | '/terms'
     | '/exam/$slug'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdsDottxtRoute: typeof AdsDottxtRoute
+  ContactRoute: typeof ContactRoute
+  PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   ExamSlugRoute: typeof ExamSlugRoute
   ApiPublicCronDispatchNotificationsRoute: typeof ApiPublicCronDispatchNotificationsRoute
 }
@@ -92,11 +157,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ads.txt': {
+      id: '/ads.txt'
+      path: '/ads.txt'
+      fullPath: '/ads.txt'
+      preLoaderRoute: typeof AdsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exam/$slug': {
@@ -118,7 +218,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdsDottxtRoute: AdsDottxtRoute,
+  ContactRoute: ContactRoute,
+  PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   ExamSlugRoute: ExamSlugRoute,
   ApiPublicCronDispatchNotificationsRoute:
     ApiPublicCronDispatchNotificationsRoute,

@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { ADSENSE_CLIENT, ADSENSE_ENABLED, ADSENSE_SCRIPT_SRC } from "../lib/adsense";
+import { SiteFooter } from "../components/site-footer";
 
 function NotFoundComponent() {
   return (
@@ -81,7 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "EduAlert PCMB" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      // AdSense site ownership verification
+      ...(ADSENSE_ENABLED ? [{ name: "google-adsense-account", content: ADSENSE_CLIENT }] : []),
     ],
+    // Google AdSense (Auto ads + manual units). Only loaded when a publisher ID is configured.
+    scripts: ADSENSE_ENABLED
+      ? [{ src: ADSENSE_SCRIPT_SRC, async: true, crossOrigin: "anonymous" as const }]
+      : [],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -123,6 +131,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <SiteFooter />
     </QueryClientProvider>
   );
 }

@@ -19,6 +19,8 @@ import { RouteError } from "@/components/route-error";
 import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { AdSlot } from "@/components/ad-slot";
+import { AD_SLOTS } from "@/lib/adsense";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -239,6 +241,7 @@ function Dashboard() {
             ))}
           </div>
         )}
+        <AdSlot slot={AD_SLOTS.homeInFeed} className="mt-8" />
         <p className="mt-8 text-xs text-muted-foreground">
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.

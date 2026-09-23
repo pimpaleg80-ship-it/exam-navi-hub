@@ -8,6 +8,8 @@ import { RouteError } from "@/components/route-error";
 import { SITE_URL, examDetailJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { AdSlot } from "@/components/ad-slot";
+import { AD_SLOTS } from "@/lib/adsense";
 
 const CHECKLIST = [
   { key: "applied", label: "Application submitted" },
@@ -230,6 +232,7 @@ function ExamDetail() {
           >
             Official website <ExternalLink className="size-3.5" />
           </a>
+          <AdSlot slot={AD_SLOTS.examDetail} />
         </ScrollReveal>
       </div>
     </main>
