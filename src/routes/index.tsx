@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { CalendarClock, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, CalendarClock, RefreshCw, Search, ShieldCheck } from "lucide-react";
 import {
   ATTEMPT_YEARS,
   BASE_CYCLE_YEAR,
@@ -120,12 +120,23 @@ function Dashboard() {
     <main className="min-h-screen bg-background">
       <header className="border-b bg-card/85 shadow-soft backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <p className="animate-fade-in text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            EXAM ALERT INDIA
-          </p>
-          <h1 className="mt-2 animate-fade-in text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Every PCMB entrance deadline, in one countdown.
-          </h1>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="animate-fade-in text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                EXAM ALERT INDIA
+              </p>
+              <h1 className="mt-2 animate-fade-in text-3xl font-extrabold tracking-tight sm:text-4xl">
+                Every PCMB entrance deadline, in one countdown.
+              </h1>
+            </div>
+            <Link
+              to="/government"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-primary/20 bg-primary/10 px-3 py-2 text-sm font-semibold text-primary shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/15"
+            >
+              Government exams
+              <ArrowUpRight className="size-4" />
+            </Link>
+          </div>
           <p className="mt-2 max-w-2xl animate-fade-in text-sm text-muted-foreground sm:text-base">
             Engineering, medical, defense, research and state CET exams — registration windows,
             correction slots, admit cards and results, all on IST.
