@@ -18,7 +18,6 @@ import { formatSyncedAgo } from "@/lib/exam-sync";
 import { RouteError } from "@/components/route-error";
 import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
-import { ScrollReveal } from "@/components/scroll-reveal";
 import { AdSlot } from "@/components/ad-slot";
 import { AD_SLOTS } from "@/lib/adsense";
 
@@ -324,33 +323,31 @@ function Dashboard() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <ScrollReveal>
-          <h2 className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white">
-            Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
-          </h2>
-          {exams.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-white/20 bg-[#102b4d] p-10 text-center text-sm text-[#c5d1e1]">
-              No exams match these filters yet. Try widening the stream or state.
-            </p>
-          ) : (
-            <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {exams.map((exam) => (
-                <ExamCard
-                  key={exam.slug}
-                  exam={exam}
-                  now={now}
-                  followed={follow.has(exam.slug)}
-                  onToggleFollow={follow.toggle}
-                />
-              ))}
-            </div>
-          )}
-          <AdSlot slot={AD_SLOTS.homeInFeed} className="mt-8" />
-          <p id="how-it-works" className="mt-8 scroll-mt-24 text-xs text-[#aebed3]">
-            Dates marked tentative are planning estimates until the official bulletin is published.
-            Always confirm on the conducting body's website before paying a fee.
+        <h2 className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white">
+          Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
+        </h2>
+        {exams.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-white/20 bg-[#102b4d] p-10 text-center text-sm text-[#c5d1e1]">
+            No exams match these filters yet. Try widening the stream or state.
           </p>
-        </ScrollReveal>
+        ) : (
+          <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {exams.map((exam) => (
+              <ExamCard
+                key={exam.slug}
+                exam={exam}
+                now={now}
+                followed={follow.has(exam.slug)}
+                onToggleFollow={follow.toggle}
+              />
+            ))}
+          </div>
+        )}
+        <AdSlot slot={AD_SLOTS.homeInFeed} className="mt-8" />
+        <p id="how-it-works" className="mt-8 scroll-mt-24 text-xs text-[#aebed3]">
+          Dates marked tentative are planning estimates until the official bulletin is published.
+          Always confirm on the conducting body's website before paying a fee.
+        </p>
       </div>
     </main>
   );
