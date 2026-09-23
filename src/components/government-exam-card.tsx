@@ -33,6 +33,7 @@ export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; d
             {new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
+              year: "numeric",
             })}
           </p>
         </div>
@@ -42,6 +43,7 @@ export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; d
             {new Date(exam.examDate).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
+              year: "numeric",
             })}
           </p>
         </div>

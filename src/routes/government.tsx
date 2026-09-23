@@ -175,8 +175,18 @@ function GovernmentDashboard() {
                   key={exam.slug}
                   className="flex items-center justify-between gap-3 rounded-xl bg-secondary/60 px-3 py-2.5 text-sm"
                 >
-                  <span className="font-semibold">{exam.code}</span>
-                  <span className="text-destructive">
+                  <div>
+                    <span className="font-semibold">{exam.code}</span>
+                    <p className="text-xs text-muted-foreground">
+                      Apply by{" "}
+                      {new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <span className="text-right text-destructive">
                     {daysUntil(exam.applicationDeadline)} days left
                   </span>
                 </div>
