@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ADSENSE_CLIENT, ADSENSE_ENABLED, ADSENSE_SCRIPT_SRC } from "../lib/adsense";
 import { SiteFooter } from "../components/site-footer";
+import { GoogleAnalytics } from "../components/google-analytics";
 
 function NotFoundComponent() {
   return (
@@ -134,6 +135,7 @@ function RootComponent() {
       <Outlet />
       <SiteFooter />
       <Analytics />
+      <GoogleAnalytics />
     </QueryClientProvider>
   );
 }
