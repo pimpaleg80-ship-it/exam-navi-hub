@@ -9,7 +9,9 @@ import {
   type SitemapEntry,
 } from "@/lib/sitemap";
 
-const BASE_URL = "https://exam-navi-hub.lovable.app";
+import { SITE_URL } from "@/lib/exam-jsonld";
+
+const BASE_URL = SITE_URL;
 
 export const Route = createFileRoute("/sitemap.xml")({
   staticData: { sitemap: false },

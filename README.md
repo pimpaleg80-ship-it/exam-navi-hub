@@ -122,7 +122,7 @@ Design a relational schema (PostgreSQL / Supabase Prisma schema) containing:
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://exam-navi-hub.lovable.app
+**Live app**: https://www.examalertindiaonline.com
 
 ## Build with Lovable
 
