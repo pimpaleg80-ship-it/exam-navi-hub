@@ -134,6 +134,9 @@ function Dashboard() {
               </span>
             </Link>
             <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] md:flex">
+              <Link to="/exams" className="transition-colors hover:text-[#2d64eb]">
+                Exam directory
+              </Link>
               <a href="#exams" className="transition-colors hover:text-[#2d64eb]">
                 Exams
               </a>
