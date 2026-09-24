@@ -1,0 +1,246 @@
+export type GovernmentCategory =
+  "civil-services" | "staff-selection" | "banking" | "railways" | "teaching" | "police-defense";
+
+export type GovernmentExam = {
+  slug: string;
+  code: string;
+  name: string;
+  conductingBody: string;
+  category: GovernmentCategory;
+  state: string;
+  applicationDeadline: string;
+  examDate: string;
+  mode: "Online" | "Offline";
+  eligibility: string;
+  officialUrl: string;
+  tags: string[];
+};
+
+export const GOVERNMENT_CATEGORIES: Record<
+  GovernmentCategory,
+  { label: string; description: string }
+> = {
+  "civil-services": { label: "Civil services", description: "UPSC and state administration" },
+  "staff-selection": { label: "Staff selection", description: "SSC recruitment examinations" },
+  banking: { label: "Banking & finance", description: "Public-sector banking careers" },
+  railways: { label: "Railways", description: "Indian Railways recruitment" },
+  teaching: { label: "Teaching", description: "Central and state teaching roles" },
+  "police-defense": { label: "Police & defense", description: "Uniformed services and forces" },
+};
+
+export const GOVERNMENT_STATES = [
+  "All India",
+  "Maharashtra",
+  "Karnataka",
+  "Delhi",
+  "Uttar Pradesh",
+  "Rajasthan",
+  "Bihar",
+  "West Bengal",
+  "Tamil Nadu",
+];
+
+const date = (month: number, day: number) =>
+  `2027-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T23:59:00+05:30`;
+const exam = (month: number, day: number) =>
+  `2027-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T09:00:00+05:30`;
+
+// Frontend-only planning records. Confirm every date on the official portal before applying.
+export const GOVERNMENT_EXAMS: GovernmentExam[] = [
+  {
+    slug: "upsc-cse",
+    code: "UPSC CSE",
+    name: "Civil Services Examination",
+    conductingBody: "Union Public Service Commission",
+    category: "civil-services",
+    state: "All India",
+    applicationDeadline: date(2, 24),
+    examDate: exam(5, 30),
+    mode: "Offline",
+    eligibility: "Graduate degree; age 21–32 years",
+    officialUrl: "https://upsc.gov.in",
+    tags: ["IAS", "IPS", "IFS"],
+  },
+  {
+    slug: "upsc-cds",
+    code: "UPSC CDS",
+    name: "Combined Defence Services Examination",
+    conductingBody: "Union Public Service Commission",
+    category: "police-defense",
+    state: "All India",
+    applicationDeadline: date(1, 10),
+    examDate: exam(4, 11),
+    mode: "Offline",
+    eligibility: "Graduate degree; unmarried candidates",
+    officialUrl: "https://upsc.gov.in",
+    tags: ["Army", "Navy", "Air Force"],
+  },
+  {
+    slug: "upsc-capf",
+    code: "UPSC CAPF",
+    name: "Central Armed Police Forces (AC) Examination",
+    conductingBody: "Union Public Service Commission",
+    category: "police-defense",
+    state: "All India",
+    applicationDeadline: date(3, 16),
+    examDate: exam(8, 1),
+    mode: "Offline",
+    eligibility: "Graduate degree; age 20–25 years",
+    officialUrl: "https://upsc.gov.in",
+    tags: ["BSF", "CRPF", "CISF"],
+  },
+  {
+    slug: "ssc-cgl",
+    code: "SSC CGL",
+    name: "Combined Graduate Level Examination",
+    conductingBody: "Staff Selection Commission",
+    category: "staff-selection",
+    state: "All India",
+    applicationDeadline: date(6, 30),
+    examDate: exam(8, 15),
+    mode: "Online",
+    eligibility: "Graduate degree; age varies by post",
+    officialUrl: "https://ssc.gov.in",
+    tags: ["Income Tax", "Auditor", "Assistant"],
+  },
+  {
+    slug: "ssc-chsl",
+    code: "SSC CHSL",
+    name: "Combined Higher Secondary Level Examination",
+    conductingBody: "Staff Selection Commission",
+    category: "staff-selection",
+    state: "All India",
+    applicationDeadline: date(5, 7),
+    examDate: exam(7, 1),
+    mode: "Online",
+    eligibility: "12th pass; age 18–27 years",
+    officialUrl: "https://ssc.gov.in",
+    tags: ["LDC", "DEO", "Clerk"],
+  },
+  {
+    slug: "ssc-gd",
+    code: "SSC GD",
+    name: "Constable (GD) in CAPFs Examination",
+    conductingBody: "Staff Selection Commission",
+    category: "police-defense",
+    state: "All India",
+    applicationDeadline: date(12, 20),
+    examDate: exam(2, 5),
+    mode: "Online",
+    eligibility: "10th pass; age 18–23 years",
+    officialUrl: "https://ssc.gov.in",
+    tags: ["Constable", "CAPFs"],
+  },
+  {
+    slug: "ibps-po",
+    code: "IBPS PO",
+    name: "Probationary Officer / Management Trainee",
+    conductingBody: "Institute of Banking Personnel Selection",
+    category: "banking",
+    state: "All India",
+    applicationDeadline: date(7, 28),
+    examDate: exam(9, 20),
+    mode: "Online",
+    eligibility: "Graduate degree in any discipline",
+    officialUrl: "https://ibps.in",
+    tags: ["Bank PO", "Officer"],
+  },
+  {
+    slug: "sbi-po",
+    code: "SBI PO",
+    name: "State Bank of India Probationary Officer",
+    conductingBody: "State Bank of India",
+    category: "banking",
+    state: "All India",
+    applicationDeadline: date(2, 15),
+    examDate: exam(3, 8),
+    mode: "Online",
+    eligibility: "Graduate degree; age 21–30 years",
+    officialUrl: "https://sbi.co.in",
+    tags: ["Bank PO", "SBI"],
+  },
+  {
+    slug: "rrb-ntpc",
+    code: "RRB NTPC",
+    name: "Non-Technical Popular Categories",
+    conductingBody: "Railway Recruitment Boards",
+    category: "railways",
+    state: "All India",
+    applicationDeadline: date(1, 31),
+    examDate: exam(6, 12),
+    mode: "Online",
+    eligibility: "12th or graduate level, post dependent",
+    officialUrl: "https://indianrailways.gov.in",
+    tags: ["Railway", "Clerk", "Station Master"],
+  },
+  {
+    slug: "rrb-group-d",
+    code: "RRB Group D",
+    name: "Level 1 Railway Recruitment",
+    conductingBody: "Railway Recruitment Boards",
+    category: "railways",
+    state: "All India",
+    applicationDeadline: date(3, 2),
+    examDate: exam(9, 1),
+    mode: "Online",
+    eligibility: "10th pass or ITI; age 18–33 years",
+    officialUrl: "https://indianrailways.gov.in",
+    tags: ["Track Maintainer", "Pointsman"],
+  },
+  {
+    slug: "ctet",
+    code: "CTET",
+    name: "Central Teacher Eligibility Test",
+    conductingBody: "Central Board of Secondary Education",
+    category: "teaching",
+    state: "All India",
+    applicationDeadline: date(9, 18),
+    examDate: exam(12, 7),
+    mode: "Online",
+    eligibility: "D.El.Ed / B.Ed qualification as applicable",
+    officialUrl: "https://ctet.nic.in",
+    tags: ["Teacher", "Paper I", "Paper II"],
+  },
+  {
+    slug: "ugc-net",
+    code: "UGC NET",
+    name: "National Eligibility Test",
+    conductingBody: "National Testing Agency",
+    category: "teaching",
+    state: "All India",
+    applicationDeadline: date(4, 20),
+    examDate: exam(6, 25),
+    mode: "Online",
+    eligibility: "Master’s degree with required percentage",
+    officialUrl: "https://ugcnet.nta.nic.in",
+    tags: ["JRF", "Assistant Professor"],
+  },
+  {
+    slug: "mpsc-state-services",
+    code: "MPSC",
+    name: "State Services Examination",
+    conductingBody: "Maharashtra Public Service Commission",
+    category: "civil-services",
+    state: "Maharashtra",
+    applicationDeadline: date(2, 28),
+    examDate: exam(5, 7),
+    mode: "Offline",
+    eligibility: "Graduate degree; Marathi language requirement",
+    officialUrl: "https://mpsc.gov.in",
+    tags: ["Deputy Collector", "PSI"],
+  },
+  {
+    slug: "uppsc-pcs",
+    code: "UPPSC PCS",
+    name: "Combined State / Upper Subordinate Services",
+    conductingBody: "Uttar Pradesh Public Service Commission",
+    category: "civil-services",
+    state: "Uttar Pradesh",
+    applicationDeadline: date(3, 22),
+    examDate: exam(6, 18),
+    mode: "Offline",
+    eligibility: "Graduate degree; post-specific qualifications",
+    officialUrl: "https://uppsc.up.nic.in",
+    tags: ["PCS", "SDM"],
+  },
+];

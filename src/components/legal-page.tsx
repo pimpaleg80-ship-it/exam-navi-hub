@@ -14,7 +14,7 @@ export function LegalPage({
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-3xl px-4 py-10">
         <Link to="/" className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-          ← EduAlert PCMB
+          ← EXAM ALERT INDIA
         </Link>
         <h1 className="mt-3 text-3xl font-extrabold tracking-tight">{title}</h1>
         {updated && <p className="mt-1 text-xs text-muted-foreground">Last updated: {updated}</p>}

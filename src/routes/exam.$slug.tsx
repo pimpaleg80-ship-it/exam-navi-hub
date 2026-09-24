@@ -27,10 +27,15 @@ export const Route = createFileRoute("/exam/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Exam not found — EduAlert PCMB" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [
+          { title: "Exam not found — EXAM ALERT INDIA" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     }
     const { exam } = loaderData;
-    const title = `${exam.short_code} dates, fees & eligibility — EduAlert PCMB`;
+    const title = `${exam.short_code} dates, fees & eligibility — EXAM ALERT INDIA`;
     const description = `${exam.full_name} by ${exam.conducting_body}: registration window, admit card, exam day and result dates with live countdowns.`;
     const url = `${SITE_URL}/exam/${exam.slug}`;
     const { page, breadcrumbs, events } = examDetailJsonLd(exam);
@@ -91,7 +96,9 @@ function ExamDetail() {
                 {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
                 {exam.state ? ` · ${exam.state}` : ""}
               </p>
-              <h1 className="mt-1 animate-fade-in text-3xl font-extrabold tracking-tight">{exam.short_code}</h1>
+              <h1 className="mt-1 animate-fade-in text-3xl font-extrabold tracking-tight">
+                {exam.short_code}
+              </h1>
               <p className="text-muted-foreground">{exam.full_name}</p>
               <p className="mt-1 text-sm text-muted-foreground">{exam.conducting_body}</p>
             </div>
@@ -105,13 +112,19 @@ function ExamDetail() {
                   : "border-input hover:bg-secondary",
               )}
             >
-              {follow.has(exam.slug) ? <BellRing className="size-4" /> : <Bell className="size-4" />}
+              {follow.has(exam.slug) ? (
+                <BellRing className="size-4" />
+              ) : (
+                <Bell className="size-4" />
+              )}
               {follow.has(exam.slug) ? "Alerts on" : "Get alerts"}
             </button>
           </div>
 
           <div className="positive-sheen mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-primary/10 bg-secondary/60 p-4 shadow-soft">
-            <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold">{status.label}</span>
+            <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold">
+              {status.label}
+            </span>
             {upcoming && countdown ? (
               <p className="text-sm">
                 <span className="font-semibold tabular-nums">
@@ -149,7 +162,7 @@ function ExamDetail() {
                   <li
                     key={`${date.event_type}-${i}`}
                     className={cn(
-                       "flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
+                      "flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md",
                       past ? "opacity-60" : "bg-card",
                     )}
                   >
@@ -215,7 +228,11 @@ function ExamDetail() {
                       onChange={() => checklist.toggle(item.key)}
                       className="size-4 accent-[var(--primary)]"
                     />
-                    <span className={cn(checklist.has(item.key) && "text-muted-foreground line-through")}>
+                    <span
+                      className={cn(
+                        checklist.has(item.key) && "text-muted-foreground line-through",
+                      )}
+                    >
                       {item.label}
                     </span>
                   </label>
