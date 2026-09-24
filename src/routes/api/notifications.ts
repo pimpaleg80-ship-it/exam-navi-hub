@@ -24,6 +24,19 @@ function publicSupabaseConfig() {
   return { url, key };
 }
 
+function emptyFeed(degraded = false) {
+  return Response.json(
+    { notifications: [], degraded },
+    {
+      headers: {
+        "Cache-Control": degraded
+          ? "public, max-age=60, stale-while-revalidate=300"
+          : "public, max-age=300",
+      },
+    },
+  );
+}
+
 export const Route = createFileRoute("/api/notifications")({
   staticData: { sitemap: false },
   server: {
@@ -31,10 +44,7 @@ export const Route = createFileRoute("/api/notifications")({
       GET: async ({ request }) => {
         const config = publicSupabaseConfig();
         if (!config) {
-          return Response.json(
-            { notifications: [] },
-            { headers: { "Cache-Control": "public, max-age=300" } },
-          );
+          return emptyFeed();
         }
 
         const requestedLimit = Number(new URL(request.url).searchParams.get("limit") ?? "6");
@@ -48,29 +58,34 @@ export const Route = createFileRoute("/api/notifications")({
           order: "detected_at.desc",
           limit: String(limit),
         });
-        const response = await fetch(
-          `${config.url}/rest/v1/exam_notifications?${query.toString()}`,
-          {
-            headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
-          },
-        );
-        if (!response.ok) {
-          console.error("[notifications] Supabase request failed", response.status);
-          return Response.json(
-            { notifications: [] },
-            { status: 502, headers: { "Cache-Control": "no-store" } },
-          );
-        }
-
-        const notifications = (await response.json()) as NotificationRow[];
-        return Response.json(
-          { notifications, source: SITE_URL },
-          {
-            headers: {
-              "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        try {
+          const response = await fetch(
+            `${config.url}/rest/v1/exam_notifications?${query.toString()}`,
+            {
+              headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
             },
-          },
-        );
+          );
+          if (!response.ok) {
+            console.error("[notifications] Supabase request failed", response.status);
+            return emptyFeed(true);
+          }
+
+          const notifications = (await response.json()) as NotificationRow[];
+          return Response.json(
+            { notifications, source: SITE_URL, degraded: false },
+            {
+              headers: {
+                "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+              },
+            },
+          );
+        } catch (error) {
+          console.error(
+            "[notifications] Supabase request unavailable",
+            error instanceof Error ? error.message : "unknown error",
+          );
+          return emptyFeed(true);
+        }
       },
     },
   },
