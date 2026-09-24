@@ -47,21 +47,24 @@ async function monitorSources() {
   const existing = await supabaseRequest<SourceRow[]>("official_sources", {
     query: "?select=*&order=source_url.asc",
   });
-  const byUrl = new Map(existing.map((source) => [source.source_url, source]));
+  const byKey = new Map(
+    existing.map((source) => [`${source.source_url}:${source.exam_id}`, source]),
+  );
 
   for (const source of OFFICIAL_MONITOR_SOURCES) {
-    if (!byUrl.has(source.source_url)) {
+    const sourceKey = `${source.source_url}:${source.exam_id}`;
+    if (!byKey.has(sourceKey)) {
       const inserted = await supabaseRequest<SourceRow[]>("official_sources", {
         method: "POST",
         body: source,
       });
-      if (inserted[0]) byUrl.set(source.source_url, inserted[0]);
+      if (inserted[0]) byKey.set(sourceKey, inserted[0]);
     }
   }
 
   const results = [];
   for (const source of OFFICIAL_MONITOR_SOURCES) {
-    const row = byUrl.get(source.source_url);
+    const row = byKey.get(`${source.source_url}:${source.exam_id}`);
     if (!row || row.status === "disabled") continue;
     const result = await checkOfficialSource(source, {
       etag: row.etag,
@@ -73,7 +76,12 @@ async function monitorSources() {
       method: "POST",
       body: {
         source_id: row.id,
-        status: result.status === "failed" ? "failed" : result.status,
+        status:
+          result.status === "failed"
+            ? "failed"
+            : result.status === "changed"
+              ? "changed"
+              : "success",
         http_status: result.httpStatus ?? null,
         error_message: result.errorMessage ?? null,
         items_found: result.status === "changed" ? 1 : 0,
@@ -88,7 +96,7 @@ async function monitorSources() {
         ...(result.status === "failed"
           ? { status: "failed" }
           : {
-              status: result.status,
+              status: result.status === "changed" ? "changed" : "healthy",
               last_success_at: new Date().toISOString(),
               last_content_hash: result.contentHash ?? row.last_content_hash,
               last_modified: result.lastModified ?? row.last_modified,

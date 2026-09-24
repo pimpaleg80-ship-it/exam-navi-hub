@@ -20,6 +20,7 @@ import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 import { AdSlot } from "@/components/ad-slot";
 import { AD_SLOTS } from "@/lib/adsense";
+import { LatestNotifications } from "@/components/latest-notifications";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -348,6 +349,7 @@ function Dashboard() {
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.
         </p>
+        <LatestNotifications />
       </div>
     </main>
   );

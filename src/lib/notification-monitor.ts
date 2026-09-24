@@ -26,7 +26,7 @@ export type MonitorResult = {
 
 const sourceRows = new Map<string, MonitorSource>();
 for (const exam of EXAMS) {
-  sourceRows.set(exam.official_website, {
+  sourceRows.set(`${exam.official_website}:${exam.slug}`, {
     name: exam.short_code,
     organization: exam.conducting_body,
     exam_id: exam.slug,
@@ -35,7 +35,7 @@ for (const exam of EXAMS) {
   });
 }
 for (const exam of GOVERNMENT_EXAMS) {
-  sourceRows.set(exam.officialUrl, {
+  sourceRows.set(`${exam.officialUrl}:${exam.slug}`, {
     name: exam.code,
     organization: exam.conductingBody,
     exam_id: exam.slug,

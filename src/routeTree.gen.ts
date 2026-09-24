@@ -18,8 +18,10 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiNotificationsRouteImport } from './routes/api/notifications'
 import { Route as ExamSlugRouteImport } from './routes/exam.$slug'
 import { Route as ApiInternalMonitorExamsRouteImport } from './routes/api/internal/monitor-exams'
+import { Route as ApiInternalVerifyNotificationRouteImport } from './routes/api/internal/verify-notification'
 import { Route as ApiPublicCronDispatchNotificationsRouteImport } from './routes/api/public/cron/dispatch-notifications'
 
 const IndexRoute = IndexRouteImport.update({
@@ -67,6 +69,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiNotificationsRoute = ApiNotificationsRouteImport.update({
+  id: '/api/notifications',
+  path: '/api/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExamSlugRoute = ExamSlugRouteImport.update({
   id: '/exam/$slug',
   path: '/exam/$slug',
@@ -77,6 +84,12 @@ const ApiInternalMonitorExamsRoute = ApiInternalMonitorExamsRouteImport.update({
   path: '/api/internal/monitor-exams',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiInternalVerifyNotificationRoute =
+  ApiInternalVerifyNotificationRouteImport.update({
+    id: '/api/internal/verify-notification',
+    path: '/api/internal/verify-notification',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicCronDispatchNotificationsRoute =
   ApiPublicCronDispatchNotificationsRouteImport.update({
     id: '/api/public/cron/dispatch-notifications',
@@ -94,8 +107,10 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/notifications': typeof ApiNotificationsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
+  '/api/internal/verify-notification': typeof ApiInternalVerifyNotificationRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesByTo {
@@ -108,8 +123,10 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/notifications': typeof ApiNotificationsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
+  '/api/internal/verify-notification': typeof ApiInternalVerifyNotificationRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesById {
@@ -123,8 +140,10 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/notifications': typeof ApiNotificationsRoute
   '/exam/$slug': typeof ExamSlugRoute
   '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
+  '/api/internal/verify-notification': typeof ApiInternalVerifyNotificationRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRouteTypes {
@@ -139,8 +158,10 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/notifications'
     | '/exam/$slug'
     | '/api/internal/monitor-exams'
+    | '/api/internal/verify-notification'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -153,8 +174,10 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/notifications'
     | '/exam/$slug'
     | '/api/internal/monitor-exams'
+    | '/api/internal/verify-notification'
     | '/api/public/cron/dispatch-notifications'
   id:
     | '__root__'
@@ -167,8 +190,10 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/notifications'
     | '/exam/$slug'
     | '/api/internal/monitor-exams'
+    | '/api/internal/verify-notification'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesById: FileRoutesById
 }
@@ -182,8 +207,10 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  ApiNotificationsRoute: typeof ApiNotificationsRoute
   ExamSlugRoute: typeof ExamSlugRoute
   ApiInternalMonitorExamsRoute: typeof ApiInternalMonitorExamsRoute
+  ApiInternalVerifyNotificationRoute: typeof ApiInternalVerifyNotificationRoute
   ApiPublicCronDispatchNotificationsRoute: typeof ApiPublicCronDispatchNotificationsRoute
 }
 
@@ -252,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/notifications': {
+      id: '/api/notifications'
+      path: '/api/notifications'
+      fullPath: '/api/notifications'
+      preLoaderRoute: typeof ApiNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exam/$slug': {
       id: '/exam/$slug'
       path: '/exam/$slug'
@@ -264,6 +298,13 @@ declare module '@tanstack/react-router' {
       path: '/api/internal/monitor-exams'
       fullPath: '/api/internal/monitor-exams'
       preLoaderRoute: typeof ApiInternalMonitorExamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/internal/verify-notification': {
+      id: '/api/internal/verify-notification'
+      path: '/api/internal/verify-notification'
+      fullPath: '/api/internal/verify-notification'
+      preLoaderRoute: typeof ApiInternalVerifyNotificationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/cron/dispatch-notifications': {
@@ -286,8 +327,10 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  ApiNotificationsRoute: ApiNotificationsRoute,
   ExamSlugRoute: ExamSlugRoute,
   ApiInternalMonitorExamsRoute: ApiInternalMonitorExamsRoute,
+  ApiInternalVerifyNotificationRoute: ApiInternalVerifyNotificationRoute,
   ApiPublicCronDispatchNotificationsRoute:
     ApiPublicCronDispatchNotificationsRoute,
 }
