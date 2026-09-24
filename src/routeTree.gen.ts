@@ -19,6 +19,7 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ExamSlugRouteImport } from './routes/exam.$slug'
+import { Route as ApiInternalMonitorExamsRouteImport } from './routes/api/internal/monitor-exams'
 import { Route as ApiPublicCronDispatchNotificationsRouteImport } from './routes/api/public/cron/dispatch-notifications'
 
 const IndexRoute = IndexRouteImport.update({
@@ -71,6 +72,11 @@ const ExamSlugRoute = ExamSlugRouteImport.update({
   path: '/exam/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiInternalMonitorExamsRoute = ApiInternalMonitorExamsRouteImport.update({
+  id: '/api/internal/monitor-exams',
+  path: '/api/internal/monitor-exams',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicCronDispatchNotificationsRoute =
   ApiPublicCronDispatchNotificationsRouteImport.update({
     id: '/api/public/cron/dispatch-notifications',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
+  '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesByTo {
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
+  '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRoutesById {
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
+  '/api/internal/monitor-exams': typeof ApiInternalMonitorExamsRoute
   '/api/public/cron/dispatch-notifications': typeof ApiPublicCronDispatchNotificationsRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
+    | '/api/internal/monitor-exams'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
+    | '/api/internal/monitor-exams'
     | '/api/public/cron/dispatch-notifications'
   id:
     | '__root__'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
+    | '/api/internal/monitor-exams'
     | '/api/public/cron/dispatch-notifications'
   fileRoutesById: FileRoutesById
 }
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   ExamSlugRoute: typeof ExamSlugRoute
+  ApiInternalMonitorExamsRoute: typeof ApiInternalMonitorExamsRoute
   ApiPublicCronDispatchNotificationsRoute: typeof ApiPublicCronDispatchNotificationsRoute
 }
 
@@ -246,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/internal/monitor-exams': {
+      id: '/api/internal/monitor-exams'
+      path: '/api/internal/monitor-exams'
+      fullPath: '/api/internal/monitor-exams'
+      preLoaderRoute: typeof ApiInternalMonitorExamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/cron/dispatch-notifications': {
       id: '/api/public/cron/dispatch-notifications'
       path: '/api/public/cron/dispatch-notifications'
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   ExamSlugRoute: ExamSlugRoute,
+  ApiInternalMonitorExamsRoute: ApiInternalMonitorExamsRoute,
   ApiPublicCronDispatchNotificationsRoute:
     ApiPublicCronDispatchNotificationsRoute,
 }
