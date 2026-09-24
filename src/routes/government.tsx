@@ -16,6 +16,7 @@ import {
   type GovernmentCategory,
 } from "@/data/government-exams";
 import { cn } from "@/lib/utils";
+import { SITE_URL } from "@/lib/exam-jsonld";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
@@ -27,7 +28,17 @@ export const Route = createFileRoute("/government")({
         content:
           "Track UPSC, SSC, banking, railways, teaching and police recruitment deadlines across India.",
       },
+      { property: "og:title", content: "Government & Civil Services — EXAM ALERT INDIA" },
+      {
+        property: "og:description",
+        content:
+          "Track UPSC, SSC, banking, railways, teaching and police recruitment deadlines across India.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/government` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/government` }],
   }),
   component: GovernmentDashboard,
 });

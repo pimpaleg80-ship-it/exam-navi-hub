@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ADSENSE_CLIENT, ADSENSE_ENABLED, ADSENSE_SCRIPT_SRC } from "../lib/adsense";
 import { SiteFooter } from "../components/site-footer";
 import { GoogleAnalytics } from "../components/google-analytics";
+import { SITE_URL } from "../lib/exam-jsonld";
 
 function NotFoundComponent() {
   return (
@@ -88,10 +89,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // AdSense site ownership verification
       ...(ADSENSE_ENABLED ? [{ name: "google-adsense-account", content: ADSENSE_CLIENT }] : []),
     ],
-    // Google AdSense (Auto ads + manual units). Only loaded when a publisher ID is configured.
-    scripts: ADSENSE_ENABLED
-      ? [{ src: ADSENSE_SCRIPT_SRC, async: true, crossOrigin: "anonymous" as const }]
-      : [],
+    // Site-wide identity schema is rendered on every public page.
+    scripts: [
+      ...(ADSENSE_ENABLED
+        ? [{ src: ADSENSE_SCRIPT_SRC, async: true, crossOrigin: "anonymous" as const }]
+        : []),
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": `${SITE_URL}/#organization`,
+              name: "EXAM ALERT INDIA",
+              url: SITE_URL,
+              email: "mailto:pimpaleharshad99@gmail.com",
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${SITE_URL}/#website`,
+              name: "EXAM ALERT INDIA",
+              url: SITE_URL,
+              publisher: { "@id": `${SITE_URL}/#organization` },
+              inLanguage: "en-IN",
+            },
+          ],
+        }),
+      },
+    ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },

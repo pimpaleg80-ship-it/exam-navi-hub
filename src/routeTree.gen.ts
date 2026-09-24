@@ -15,6 +15,7 @@ import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GovernmentRouteImport } from './routes/government'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ExamSlugRouteImport } from './routes/exam.$slug'
@@ -50,6 +51,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/exam/$slug': typeof ExamSlugRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/government'
     | '/privacy'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/government'
     | '/privacy'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/government'
     | '/privacy'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/terms'
     | '/exam/$slug'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   GovernmentRoute: typeof GovernmentRoute
   PrivacyRoute: typeof PrivacyRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   ExamSlugRoute: typeof ExamSlugRoute
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   GovernmentRoute: GovernmentRoute,
   PrivacyRoute: PrivacyRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   ExamSlugRoute: ExamSlugRoute,

@@ -16,7 +16,10 @@ export const Route = createFileRoute("/api/public/cron/dispatch-notifications")(
       POST: async ({ request }) => {
         const secret = process.env["CRON_SECRET"];
         if (!secret || request.headers.get("x-cron-secret") !== secret) {
-          return new Response("Unauthorized", { status: 401 });
+          return new Response("Unauthorized", {
+            status: 401,
+            headers: { "X-Robots-Tag": "noindex, nofollow, noarchive" },
+          });
         }
 
         const now = new Date();
@@ -42,7 +45,10 @@ export const Route = createFileRoute("/api/public/cron/dispatch-notifications")(
           }
         }
 
-        return Response.json({ ok: true, ran_at: now.toISOString(), planned, due });
+        return Response.json(
+          { ok: true, ran_at: now.toISOString(), planned, due },
+          { headers: { "X-Robots-Tag": "noindex, nofollow, noarchive" } },
+        );
       },
     },
   },
