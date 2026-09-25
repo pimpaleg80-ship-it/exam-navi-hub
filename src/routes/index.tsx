@@ -22,6 +22,7 @@ import { AdSlot } from "@/components/ad-slot";
 import { AD_SLOTS } from "@/lib/adsense";
 import { LanguageSelector } from "@/components/language-selector";
 import { useLanguage } from "@/lib/i18n";
+import { ExamNotes } from "@/components/exam-notes";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -357,6 +358,7 @@ function Dashboard() {
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.
         </p>
+        <ExamNotes />
       </div>
     </main>
   );

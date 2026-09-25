@@ -19,6 +19,7 @@ import { SITE_URL } from "@/lib/exam-jsonld";
 import { getGovernmentExams } from "@/lib/government-exams.functions";
 import { LanguageSelector } from "@/components/language-selector";
 import { useLanguage } from "@/lib/i18n";
+import { ExamNotes } from "@/components/exam-notes";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
@@ -260,6 +261,7 @@ function GovernmentDashboard() {
             ))}
           </div>
         )}
+        <ExamNotes />
       </div>
     </main>
   );

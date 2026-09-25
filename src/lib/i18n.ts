@@ -13,7 +13,27 @@ export const LANGUAGES = [
 ] as const;
 
 const translations: Record<LanguageCode, Record<string, string>> = {
-  en: {},
+  en: {
+    "Notes & meanings": "Notes & meanings",
+    "Short explanations for the labels used on this dashboard.":
+      "Short explanations for the labels used on this dashboard.",
+    Tentative: "Tentative",
+    Confirmed: "Confirmed",
+    "Official source": "Official source",
+    Synced: "Synced",
+    "An expected or planning date; confirm it on the official exam portal.":
+      "An expected or planning date; confirm it on the official exam portal.",
+    "A date published in an official notice or bulletin.":
+      "A date published in an official notice or bulletin.",
+    "The period when applications can be submitted.":
+      "The period when applications can be submitted.",
+    "The final application deadline; late fees may have different dates.":
+      "The final application deadline; late fees may have different dates.",
+    "The exam authority website used to verify dates and notices.":
+      "The exam authority website used to verify dates and notices.",
+    "The last time this dashboard checked its connected data source.":
+      "The last time this dashboard checked its connected data source.",
+  },
   mr: {
     "Centralized exam intelligence · India": "केंद्रीकृत परीक्षा माहिती · भारत",
     "Never miss an": "एकही परीक्षा चुकवू नका",
