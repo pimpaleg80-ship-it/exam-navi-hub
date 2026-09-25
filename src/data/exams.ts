@@ -1225,15 +1225,20 @@ const shiftIso = (iso: string, years: number) => {
 /** Project an exam's calendar onto another attempt year. */
 export function shiftExamToCycle(exam: Exam, year: number): Exam {
   const delta = year - BASE_CYCLE_YEAR;
-  if (delta === 0) return exam;
+  const dates = exam.dates.map((d0) => ({
+    ...d0,
+    is_tentative: true,
+    ...(delta === 0
+      ? {}
+      : {
+          start_datetime: shiftIso(d0.start_datetime, delta),
+          ...(d0.end_datetime ? { end_datetime: shiftIso(d0.end_datetime, delta) } : {}),
+        }),
+  }));
+  if (delta === 0) return { ...exam, dates };
   return {
     ...exam,
-    dates: exam.dates.map((d0) => ({
-      ...d0,
-      start_datetime: shiftIso(d0.start_datetime, delta),
-      ...(d0.end_datetime ? { end_datetime: shiftIso(d0.end_datetime, delta) } : {}),
-      is_tentative: true,
-    })),
+    dates,
   };
 }
 
