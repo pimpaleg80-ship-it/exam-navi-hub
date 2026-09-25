@@ -11,15 +11,16 @@ import { useMemo, useState } from "react";
 import { GovernmentExamCard } from "@/components/government-exam-card";
 import {
   GOVERNMENT_CATEGORIES,
-  GOVERNMENT_EXAMS,
   GOVERNMENT_STATES,
   type GovernmentCategory,
 } from "@/data/government-exams";
 import { cn } from "@/lib/utils";
 import { SITE_URL } from "@/lib/exam-jsonld";
+import { getGovernmentExams } from "@/lib/government-exams.functions";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
+  loader: () => getGovernmentExams(),
   head: () => ({
     meta: [
       { title: "Government & Civil Services — EXAM ALERT INDIA" },
@@ -44,6 +45,7 @@ export const Route = createFileRoute("/government")({
 });
 
 function GovernmentDashboard() {
+  const { exams: governmentExams } = Route.useLoaderData();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<GovernmentCategory | "all">("all");
   const [state, setState] = useState("All India");
@@ -51,26 +53,26 @@ function GovernmentDashboard() {
   const daysUntil = (value: string) => Math.ceil((new Date(value).getTime() - today) / 86400000);
   const exams = useMemo(
     () =>
-      GOVERNMENT_EXAMS.filter((exam) => {
-        const haystack =
-          `${exam.code} ${exam.name} ${exam.conductingBody} ${exam.tags.join(" ")}`.toLowerCase();
-        return (
-          (!query || haystack.includes(query.toLowerCase())) &&
-          (category === "all" || exam.category === category) &&
-          (state === "All India" || exam.state === state)
-        );
-      }).sort(
-        (a, b) =>
-          new Date(a.applicationDeadline).getTime() - new Date(b.applicationDeadline).getTime(),
-      ),
-    [category, query, state],
+      governmentExams
+        .filter((exam) => {
+          const haystack =
+            `${exam.code} ${exam.name} ${exam.conductingBody} ${exam.tags.join(" ")}`.toLowerCase();
+          return (
+            (!query || haystack.includes(query.toLowerCase())) &&
+            (category === "all" || exam.category === category) &&
+            (state === "All India" || exam.state === state)
+          );
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.applicationDeadline).getTime() - new Date(b.applicationDeadline).getTime(),
+        ),
+    [category, governmentExams, query, state],
   );
-  const closingSoon = GOVERNMENT_EXAMS.filter(
+  const closingSoon = governmentExams.filter(
     (exam) => daysUntil(exam.applicationDeadline) >= 0 && daysUntil(exam.applicationDeadline) <= 30,
   );
-  const openNow = GOVERNMENT_EXAMS.filter(
-    (exam) => daysUntil(exam.applicationDeadline) >= 0,
-  ).length;
+  const openNow = governmentExams.filter((exam) => daysUntil(exam.applicationDeadline) >= 0).length;
 
   return (
     <main className="min-h-screen bg-background">
@@ -111,7 +113,7 @@ function GovernmentDashboard() {
             <Stat
               icon={<BriefcaseBusiness className="size-4" />}
               label="Exams tracked"
-              value={GOVERNMENT_EXAMS.length}
+              value={governmentExams.length}
             />
             <Stat
               icon={<ShieldCheck className="size-4" />}

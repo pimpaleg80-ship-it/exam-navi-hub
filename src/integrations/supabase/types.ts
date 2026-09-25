@@ -53,6 +53,66 @@ export type Database = {
         };
         Relationships: [];
       };
+      government_exams: {
+        Row: {
+          id: number;
+          slug: string;
+          code: string;
+          name: string;
+          conducting_body: string;
+          category: string;
+          state: string;
+          application_deadline: string;
+          exam_date: string;
+          mode: string;
+          eligibility: string;
+          official_url: string;
+          tags: string[];
+          is_tentative: boolean;
+          source_url: string | null;
+          verified_at: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: number;
+          slug: string;
+          code: string;
+          name: string;
+          conducting_body: string;
+          category: string;
+          state: string;
+          application_deadline: string;
+          exam_date: string;
+          mode: string;
+          eligibility: string;
+          official_url: string;
+          tags?: string[];
+          is_tentative?: boolean;
+          source_url?: string | null;
+          verified_at?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          id?: number;
+          slug?: string;
+          code?: string;
+          name?: string;
+          conducting_body?: string;
+          category?: string;
+          state?: string;
+          application_deadline?: string;
+          exam_date?: string;
+          mode?: string;
+          eligibility?: string;
+          official_url?: string;
+          tags?: string[];
+          is_tentative?: boolean;
+          source_url?: string | null;
+          verified_at?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
