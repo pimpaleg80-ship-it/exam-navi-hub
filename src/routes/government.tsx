@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { SITE_URL } from "@/lib/exam-jsonld";
 import { getGovernmentExams } from "@/lib/government-exams.functions";
 import { LanguageSelector } from "@/components/language-selector";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/government")({
 });
 
 function GovernmentDashboard() {
+  const { t } = useLanguage();
   const { exams: governmentExams } = Route.useLoaderData();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<GovernmentCategory | "all">("all");
@@ -96,7 +98,7 @@ function GovernmentDashboard() {
                   PCMB entrances
                 </Link>
                 <span className="rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
-                  Government exams
+                  {t("Government & civil services")}
                 </span>
               </div>
             </div>
@@ -182,7 +184,7 @@ function GovernmentDashboard() {
                 <p className="text-xs font-bold uppercase tracking-wider text-primary">
                   Deadline radar
                 </p>
-                <h2 className="mt-1 text-xl font-bold">What needs attention next</h2>
+                <h2 className="mt-1 text-xl font-bold">{t("What needs attention next")}</h2>
               </div>
               <CalendarClock className="size-6 text-primary" />
             </div>
@@ -219,7 +221,7 @@ function GovernmentDashboard() {
             <p className="text-xs font-bold uppercase tracking-wider opacity-80">
               Explore the ecosystem
             </p>
-            <h2 className="mt-1 text-xl font-bold">Plan beyond one exam</h2>
+            <h2 className="mt-1 text-xl font-bold">{t("Plan beyond one exam")}</h2>
             <p className="mt-2 text-sm opacity-85">
               Compare eligibility, mode and deadlines across{" "}
               {Object.keys(GOVERNMENT_CATEGORIES).length} career tracks.
