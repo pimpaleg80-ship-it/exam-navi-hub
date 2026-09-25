@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { SITE_URL } from "@/lib/exam-jsonld";
 import { getGovernmentExams } from "@/lib/government-exams.functions";
+import { LanguageSelector } from "@/components/language-selector";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
@@ -85,16 +86,19 @@ function GovernmentDashboard() {
             >
               <ArrowLeft className="size-4" /> EXAM ALERT INDIA
             </Link>
-            <div className="flex rounded-full border bg-background p-1 text-sm">
-              <Link
-                to="/"
-                className="rounded-full px-3 py-1.5 text-muted-foreground hover:text-foreground"
-              >
-                PCMB entrances
-              </Link>
-              <span className="rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
-                Government exams
-              </span>
+            <div className="flex items-center gap-3">
+              <LanguageSelector />
+              <div className="flex rounded-full border bg-background p-1 text-sm">
+                <Link
+                  to="/"
+                  className="rounded-full px-3 py-1.5 text-muted-foreground hover:text-foreground"
+                >
+                  PCMB entrances
+                </Link>
+                <span className="rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
+                  Government exams
+                </span>
+              </div>
             </div>
           </nav>
           <div className="mt-10 max-w-3xl">

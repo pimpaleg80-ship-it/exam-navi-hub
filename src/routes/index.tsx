@@ -20,7 +20,7 @@ import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 import { AdSlot } from "@/components/ad-slot";
 import { AD_SLOTS } from "@/lib/adsense";
-import { LatestNotifications } from "@/components/latest-notifications";
+import { LanguageSelector } from "@/components/language-selector";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -134,17 +134,18 @@ function Dashboard() {
               </span>
             </Link>
             <div className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.22em] md:flex">
-              <Link to="/exams" className="transition-colors hover:text-[#2d64eb]">
-                Exam directory
-              </Link>
               <a href="#exams" className="transition-colors hover:text-[#2d64eb]">
                 Exams
               </a>
+              <Link to="/exams" className="transition-colors hover:text-[#2d64eb]">
+                Exam directory
+              </Link>
               <a href="#how-it-works" className="transition-colors hover:text-[#2d64eb]">
                 How it works
               </a>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
+              <LanguageSelector />
               <a
                 href="#exams"
                 className="hidden text-xs font-bold uppercase tracking-[0.18em] hover:text-[#2d64eb] sm:inline"
@@ -352,7 +353,6 @@ function Dashboard() {
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.
         </p>
-        <LatestNotifications />
       </div>
     </main>
   );
