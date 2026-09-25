@@ -8,6 +8,33 @@ export type Database = {
   };
   public: {
     Tables: {
+      exam_sources: {
+        Row: {
+          exam_slug: string;
+          official_url: string;
+          application_url: string;
+          conducting_body: string;
+          source_name: string;
+          updated_at: string;
+        };
+        Insert: {
+          exam_slug: string;
+          official_url: string;
+          application_url: string;
+          conducting_body: string;
+          source_name: string;
+          updated_at?: string;
+        };
+        Update: {
+          exam_slug?: string;
+          official_url?: string;
+          application_url?: string;
+          conducting_body?: string;
+          source_name?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       exam_revisions: {
         Row: {
           exam_slug: string;

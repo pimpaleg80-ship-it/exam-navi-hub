@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { EXAM_REVISIONS, type ExamRevision } from "@/data/exam-revisions";
+import { EXAM_SOURCES, type ExamSource } from "@/data/exam-sources";
 
 /**
  * Live date feed the clients poll every few minutes.
@@ -16,6 +17,7 @@ export const getExamRevisions = createServerFn({ method: "GET" })
   )
   .handler(async ({ data }) => {
     let revisions = EXAM_REVISIONS.filter((r) => r.year === data.year);
+    let sources = EXAM_SOURCES;
 
     if (process.env["SUPABASE_URL"] && process.env["SUPABASE_SERVICE_ROLE_KEY"]) {
       try {
@@ -30,6 +32,13 @@ export const getExamRevisions = createServerFn({ method: "GET" })
 
         if (error) throw error;
         revisions = (remoteRevisions ?? []) as ExamRevision[];
+
+        const { data: remoteSources, error: sourceError } = await supabaseAdmin
+          .from("exam_sources")
+          .select("exam_slug,official_url,application_url,conducting_body,source_name,updated_at")
+          .order("exam_slug", { ascending: true });
+        if (sourceError) throw sourceError;
+        if (remoteSources?.length) sources = remoteSources as ExamSource[];
       } catch (error) {
         console.warn(
           "[Exam sync] Supabase revision feed unavailable; using local revisions.",
@@ -45,5 +54,6 @@ export const getExamRevisions = createServerFn({ method: "GET" })
       server_now: Date.now(),
       count: revisions.length,
       revisions: revisions.sort((a, b) => a.revised_at.localeCompare(b.revised_at)),
+      sources,
     };
   });
