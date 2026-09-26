@@ -28,11 +28,13 @@ export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
   head: () => ({
     meta: [
-      { title: "EXAM ALERT INDIA — PCMB Exam Deadline Tracker for Indian Students" },
+      {
+        title: "Exam Alert India – JEE, NEET, MHT-CET, UPSC, MPSC & Exam Updates",
+      },
       {
         name: "description",
         content:
-          "Track registration windows, admit cards and results for JEE, NEET, NDA, IISER and every state CET. Never miss a PCMB deadline again.",
+          "Get the latest JEE, NEET, MHT-CET, UPSC, MPSC and competitive exam notifications, application dates, deadlines, admit cards, results and important exam updates in one place.",
       },
       { property: "og:title", content: "EXAM ALERT INDIA — PCMB Exam Deadline Tracker" },
       {
