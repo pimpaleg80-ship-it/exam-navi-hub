@@ -1,5 +1,6 @@
 import type { Exam, ExamDate } from "@/data/exams";
 import type { ExamRevision } from "@/data/exam-revisions";
+import type { ExamSource } from "@/data/exam-sources";
 
 const keyOf = (slug: string, event: string) => `${slug}::${event}`;
 
@@ -16,7 +17,11 @@ export function sanitizeRevisions(revisions: unknown): ExamRevision[] {
     if (typeof rev.event_type !== "string" || rev.event_type.length === 0) return false;
     if (typeof rev.year !== "number" || !Number.isInteger(rev.year)) return false;
     if (rev.start_datetime !== undefined && !isValidIso(rev.start_datetime)) return false;
-    if (rev.end_datetime !== undefined && rev.end_datetime !== null && !isValidIso(rev.end_datetime))
+    if (
+      rev.end_datetime !== undefined &&
+      rev.end_datetime !== null &&
+      !isValidIso(rev.end_datetime)
+    )
       return false;
     if (typeof rev.revised_at !== "string") return false;
     return true;
@@ -79,6 +84,43 @@ export function applyRevisions(exams: Exam[] | undefined, revisions: ExamRevisio
       (a, b) => new Date(a.start_datetime).getTime() - new Date(b.start_datetime).getTime(),
     );
     return { ...exam, dates };
+  });
+}
+
+export function sanitizeSources(sources: unknown): ExamSource[] {
+  if (!Array.isArray(sources)) return [];
+  return sources.filter((source): source is ExamSource => {
+    if (!source || typeof source !== "object") return false;
+    const value = source as Partial<ExamSource>;
+    return (
+      typeof value.exam_slug === "string" &&
+      value.exam_slug.length > 0 &&
+      typeof value.official_url === "string" &&
+      value.official_url.startsWith("http") &&
+      typeof value.application_url === "string" &&
+      value.application_url.startsWith("http") &&
+      typeof value.conducting_body === "string" &&
+      typeof value.source_name === "string" &&
+      typeof value.updated_at === "string" &&
+      isValidIso(value.updated_at)
+    );
+  });
+}
+
+export function applySources(exams: Exam[] | undefined, sources: ExamSource[]): Exam[] {
+  const base = Array.isArray(exams) ? exams : [];
+  if (sources.length === 0) return base;
+  const bySlug = new Map(sources.map((source) => [source.exam_slug, source]));
+  return base.map((exam) => {
+    const source = bySlug.get(exam.slug);
+    return source
+      ? {
+          ...exam,
+          official_website: source.official_url,
+          application_url: source.application_url,
+          conducting_body: source.conducting_body || exam.conducting_body,
+        }
+      : exam;
   });
 }
 

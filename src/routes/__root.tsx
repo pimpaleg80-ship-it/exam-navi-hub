@@ -83,13 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#081a33" },
       { property: "og:site_name", content: "EXAM ALERT INDIA" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       // AdSense site ownership verification
       ...(ADSENSE_ENABLED ? [{ name: "google-adsense-account", content: ADSENSE_CLIENT }] : []),
     ],
-    // Site-wide identity schema is rendered on every public page.
     scripts: [
       ...(ADSENSE_ENABLED
         ? [{ src: ADSENSE_SCRIPT_SRC, async: true, crossOrigin: "anonymous" as const }]
@@ -125,6 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
       },
+      { rel: "manifest", href: "/site.webmanifest" },
       {
         rel: "stylesheet",
         href: appCss,
@@ -140,7 +141,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <head>
         <HeadContent />
       </head>
