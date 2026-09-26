@@ -13,12 +13,12 @@ export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; d
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
             {GOVERNMENT_CATEGORIES[exam.category].label}
           </span>
           <h3 className="mt-3 text-lg font-bold tracking-tight">{exam.code}</h3>
-          <p className="text-sm text-muted-foreground">{exam.name}</p>
+          <p className="break-words text-sm text-muted-foreground">{exam.name}</p>
         </div>
         {closingSoon ? (
           <span className="shrink-0 rounded-full bg-warning/20 px-2 py-1 text-xs font-semibold text-warning-foreground">

@@ -125,10 +125,10 @@ function Dashboard() {
     <main className="min-h-screen overflow-x-hidden bg-[#081a33]">
       <header className="border-b border-white/10 bg-[#081a33] text-white shadow-[0_18px_50px_-28px_rgba(8,26,51,0.75)]">
         <nav className="border-b border-slate-200 bg-white text-[#081a33]">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-8">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:flex-nowrap sm:gap-5 sm:px-8">
             <Link
               to="/"
-              className="group inline-flex items-center gap-3"
+              className="group inline-flex min-w-0 items-center gap-3"
               aria-label="EXAM ALERT INDIA home"
             >
               <span className="grid size-10 place-items-center bg-[#2d64eb] text-white shadow-[4px_4px_0_#081a33]">
@@ -149,7 +149,7 @@ function Dashboard() {
                 How it works
               </a>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="ml-auto flex max-w-full items-center gap-2 sm:gap-4">
               <LanguageSelector />
               <a
                 href="#exams"
@@ -172,9 +172,9 @@ function Dashboard() {
               <span className="mr-2 inline-block size-3 bg-[#2d64eb] align-[-1px]" />
               {t("Centralized exam intelligence · India")}
             </p>
-            <h1 className="mt-7 max-w-3xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.065em] text-white text-balance sm:text-7xl lg:text-[6.6rem]">
+            <h1 className="mt-7 max-w-3xl text-4xl font-black uppercase leading-[0.95] tracking-[-0.065em] text-white text-balance sm:text-7xl sm:leading-[0.9] lg:text-[6.6rem]">
               {t("Never miss an")}
-              <span className="mt-2 block w-fit bg-[#2d64eb] px-2 pb-3 pt-1">
+              <span className="mt-2 block w-fit max-w-full bg-[#2d64eb] px-2 pb-3 pt-1">
                 {t("exam update")}
               </span>
             </h1>

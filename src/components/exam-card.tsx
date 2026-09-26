@@ -42,7 +42,12 @@ export function ExamCard({
       <header className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", STATUS_CLASS[status.key])}>
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                STATUS_CLASS[status.key],
+              )}
+            >
               {status.label}
             </span>
             {exam.state ? (
@@ -59,7 +64,11 @@ export function ExamCard({
         <button
           type="button"
           onClick={() => onToggleFollow(exam.slug)}
-          aria-label={followed ? `Turn off alerts for ${exam.short_code}` : `Get alerts for ${exam.short_code}`}
+          aria-label={
+            followed
+              ? `Turn off alerts for ${exam.short_code}`
+              : `Get alerts for ${exam.short_code}`
+          }
           className={cn(
             "relative z-[1] shrink-0 rounded-full border p-2 transition-[color,background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-sm active:scale-95",
             followed
@@ -77,19 +86,22 @@ export function ExamCard({
             {status.focusLabel} · {status.focus.label}
             {status.focus.is_tentative ? " (tentative)" : ""}
           </p>
-          <div className="mt-1 flex items-baseline gap-3">
+          <div className="mt-1 flex flex-wrap items-baseline gap-3">
             {(["days", "hours", "minutes"] as const).map((unit) => (
               <span key={unit} className="flex items-baseline gap-1">
                 <span
                   suppressHydrationWarning
-                  className={cn("text-2xl font-bold tabular-nums", urgent ? "text-destructive" : "text-foreground")}
+                  className={cn(
+                    "text-2xl font-bold tabular-nums",
+                    urgent ? "text-destructive" : "text-foreground",
+                  )}
                 >
                   {countdown[unit]}
                 </span>
                 <span className="text-xs text-muted-foreground">{unit.slice(0, 1)}</span>
               </span>
             ))}
-            <span className="ml-auto text-xs text-muted-foreground">
+            <span className="ml-auto whitespace-nowrap text-xs text-muted-foreground">
               {IST.format(new Date(status.focus.start_datetime))}
             </span>
           </div>

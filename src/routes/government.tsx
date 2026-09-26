@@ -89,16 +89,16 @@ function GovernmentDashboard() {
             >
               <ArrowLeft className="size-4" /> EXAM ALERT INDIA
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex max-w-full flex-wrap items-center justify-end gap-2 sm:gap-3">
               <LanguageSelector />
-              <div className="flex rounded-full border bg-background p-1 text-sm">
+              <div className="flex max-w-full flex-wrap rounded-full border bg-background p-1 text-xs sm:text-sm">
                 <Link
                   to="/"
-                  className="rounded-full px-3 py-1.5 text-muted-foreground hover:text-foreground"
+                  className="rounded-full px-2 py-1.5 text-muted-foreground hover:text-foreground sm:px-3"
                 >
                   PCMB entrances
                 </Link>
-                <span className="rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
+                <span className="rounded-full bg-primary px-2 py-1.5 font-semibold text-primary-foreground sm:px-3">
                   {t("Government & civil services")}
                 </span>
               </div>
