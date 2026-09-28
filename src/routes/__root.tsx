@@ -16,6 +16,7 @@ import { ADSENSE_CLIENT, ADSENSE_ENABLED, ADSENSE_SCRIPT_SRC } from "../lib/adse
 import { SiteFooter } from "../components/site-footer";
 import { GoogleAnalytics } from "../components/google-analytics";
 import { SITE_URL } from "../lib/exam-jsonld";
+import { Cursor } from "../components/ui/cursor";
 
 function NotFoundComponent() {
   return (
@@ -161,6 +162,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <SiteFooter />
+      <Cursor />
       <Analytics />
       <GoogleAnalytics />
     </QueryClientProvider>
