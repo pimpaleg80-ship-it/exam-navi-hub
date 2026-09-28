@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Bell, BellRing, ExternalLink } from "lucide-react";
 import type { Exam } from "@/data/exams";
 import { CATEGORY_META } from "@/data/exams";
+import { motion, AnimatePresence } from "framer-motion";
 import { IST, formatCountdown, getExamStatus, type StatusKey } from "@/lib/exam-status";
 import { cn } from "@/lib/utils";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
@@ -42,14 +43,19 @@ export function ExamCard({
       <header className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span
+            <motion.span
+              initial={status.key === "last_48h" || status.key === "registration_open" ? { scale: 0.95, opacity: 0 } : false}
+              animate={status.key === "last_48h" || status.key === "registration_open" ? { scale: 1, opacity: 1 } : false}
               className={cn(
-                "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                "rounded-full px-2.5 py-0.5 text-xs font-semibold relative overflow-hidden",
                 STATUS_CLASS[status.key],
               )}
             >
               {status.label}
-            </span>
+              {status.key === "last_48h" && (
+                <span className="absolute inset-0 rounded-full animate-pulse bg-destructive/10"></span>
+              )}
+            </motion.span>
             {exam.state ? (
               <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
                 {exam.state}
@@ -61,8 +67,10 @@ export function ExamCard({
           </h3>
           <p className="truncate text-sm text-muted-foreground">{exam.full_name}</p>
         </div>
-        <button
+        <motion.button
           type="button"
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => onToggleFollow(exam.slug)}
           aria-label={
             followed
@@ -70,14 +78,24 @@ export function ExamCard({
               : `Get alerts for ${exam.short_code}`
           }
           className={cn(
-            "relative z-[1] shrink-0 rounded-full border p-2 transition-[color,background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-sm active:scale-95",
+            "relative z-[1] shrink-0 rounded-full border p-2 transition-colors duration-300 shadow-sm hover:shadow",
             followed
               ? "border-primary bg-primary text-primary-foreground"
               : "border-border text-muted-foreground hover:bg-secondary",
           )}
         >
-          {followed ? <BellRing className="size-4" /> : <Bell className="size-4" />}
-        </button>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={followed ? "followed" : "unfollowed"}
+              initial={{ scale: 0.8, opacity: 0, rotate: followed ? -45 : 45 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              exit={{ scale: 0.8, opacity: 0, rotate: followed ? 45 : -45 }}
+              transition={{ duration: 0.2 }}
+            >
+              {followed ? <BellRing className="size-4" /> : <Bell className="size-4" />}
+            </motion.div>
+          </AnimatePresence>
+        </motion.button>
       </header>
 
       {status.focus && countdown ? (
@@ -88,16 +106,23 @@ export function ExamCard({
           </p>
           <div className="mt-1 flex flex-wrap items-baseline gap-3">
             {(["days", "hours", "minutes"] as const).map((unit) => (
-              <span key={unit} className="flex items-baseline gap-1">
-                <span
-                  suppressHydrationWarning
-                  className={cn(
-                    "text-2xl font-bold tabular-nums",
-                    urgent ? "text-destructive" : "text-foreground",
-                  )}
-                >
-                  {countdown[unit]}
-                </span>
+              <span key={unit} className="flex items-baseline gap-1 overflow-hidden">
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={countdown[unit]}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    suppressHydrationWarning
+                    className={cn(
+                      "text-2xl font-bold tabular-nums inline-block",
+                      urgent ? "text-destructive" : "text-foreground",
+                    )}
+                  >
+                    {countdown[unit]}
+                  </motion.span>
+                </AnimatePresence>
                 <span className="text-xs text-muted-foreground">{unit.slice(0, 1)}</span>
               </span>
             ))}
@@ -128,14 +153,15 @@ export function ExamCard({
           href={exam.application_url}
           target="_blank"
           rel="noreferrer noopener"
-          className="relative z-[1] inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-[transform,box-shadow,opacity] duration-200 hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:translate-y-0"
+          className="relative z-[1] group/btn inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:scale-95"
         >
-          Apply now <ExternalLink className="size-3.5" />
+          Apply now
+          <ExternalLink className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </a>
         <Link
           to="/exam/$slug"
           params={{ slug: exam.slug }}
-          className="relative z-[1] inline-flex items-center justify-center rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium transition-[transform,background-color] duration-200 hover:-translate-y-0.5 hover:bg-secondary active:translate-y-0"
+          className="relative z-[1] inline-flex items-center justify-center rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-sm active:scale-95"
         >
           Details
         </Link>
