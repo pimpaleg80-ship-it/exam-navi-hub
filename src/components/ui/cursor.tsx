@@ -38,11 +38,11 @@ export function Cursor() {
 
       // Determine cursor state based on what's hovered
       const isClickable =
-        window.getComputedStyle(target).cursor === "pointer" ||
         target.tagName === "A" ||
         target.tagName === "BUTTON" ||
         target.closest("a") !== null ||
-        target.closest("button") !== null;
+        target.closest("button") !== null ||
+        target.hasAttribute("role") && target.getAttribute("role") === "button";
 
       setIsPointer(isClickable);
 
