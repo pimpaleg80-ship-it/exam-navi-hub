@@ -32,9 +32,13 @@ function range(open?: ExamDate, close?: ExamDate) {
 function insight(statusKey: StatusKey, days: number | undefined, examDate?: ExamDate) {
   if (statusKey === "last_48h") return "Registration closes within 48 hours";
   if (statusKey === "registration_open")
-    return days !== undefined ? `Registration closes in ${days} day${days === 1 ? "" : "s"}` : "Registration is currently open";
+    return days !== undefined
+      ? `Registration closes in ${days} day${days === 1 ? "" : "s"}`
+      : "Registration is currently open";
   if (statusKey === "upcoming")
-    return days !== undefined ? `Registration opens in ${days} day${days === 1 ? "" : "s"}` : "Registration opens soon";
+    return days !== undefined
+      ? `Registration opens in ${days} day${days === 1 ? "" : "s"}`
+      : "Registration opens soon";
   if (statusKey === "admit_card_live") return "Admit card is live";
   if (statusKey === "result_out") return "Result has been declared";
   if (!examDate) return "Exam date not announced yet";
@@ -65,7 +69,11 @@ export function ExamCard({
   const regClose = dates.find((d) => d.event_type === "registration_close");
   const examDate = dates.find((d) => d.event_type === "exam_date");
   const regRange = range(regOpen, regClose);
-  const line = insight(status.key, countdown && !countdown.expired ? countdown.days : undefined, examDate);
+  const line = insight(
+    status.key,
+    countdown && !countdown.expired ? countdown.days : undefined,
+    examDate,
+  );
 
   const onMove = (e: React.PointerEvent<HTMLElement>) => {
     if (reduce || e.pointerType !== "mouse") return;
@@ -106,13 +114,19 @@ export function ExamCard({
         ref={ref}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
-        className={cn("premium-card group flex h-full flex-col gap-4 p-5", urgent && "premium-card-urgent")}
+        className={cn(
+          "premium-card group flex h-full flex-col gap-4 p-5",
+          urgent && "premium-card-urgent",
+        )}
       >
         <div className="premium-card-content flex h-full flex-col gap-4">
           <header className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-start gap-3">
               <div className="grid size-11 shrink-0 place-items-center rounded-xl border bg-gradient-to-br from-secondary to-card text-sm font-bold tracking-tight text-primary">
-                {exam.short_code.replace(/[^A-Za-z0-9]/g, "").slice(0, 3).toUpperCase()}
+                {exam.short_code
+                  .replace(/[^A-Za-z0-9]/g, "")
+                  .slice(0, 3)
+                  .toUpperCase()}
               </div>
               <div className="min-w-0">
                 <h3 className="truncate text-lg font-semibold tracking-tight text-card-foreground">
@@ -125,7 +139,10 @@ export function ExamCard({
               key={status.key}
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
-              className={cn("shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold", STATUS_CLASS[status.key])}
+              className={cn(
+                "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                STATUS_CLASS[status.key],
+              )}
             >
               {status.label}
             </motion.span>
@@ -136,31 +153,53 @@ export function ExamCard({
               {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
             </span>
             {(exam.streams ?? []).length ? (
-              <span className="rounded-full border px-2 py-0.5 text-muted-foreground">{exam.streams.join(" · ")}</span>
+              <span className="rounded-full border px-2 py-0.5 text-muted-foreground">
+                {exam.streams.join(" · ")}
+              </span>
             ) : null}
-            {exam.state ? <span className="rounded-full border px-2 py-0.5 text-muted-foreground">{exam.state}</span> : null}
+            {exam.state ? (
+              <span className="rounded-full border px-2 py-0.5 text-muted-foreground">
+                {exam.state}
+              </span>
+            ) : null}
           </div>
 
           <dl className="grid grid-cols-2 gap-3 rounded-xl border bg-secondary/40 p-3 text-sm">
             <div className="min-w-0">
-              <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Registration</dt>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Registration
+              </dt>
               <dd className="mt-1 font-medium">{regRange ?? "Not announced"}</dd>
             </div>
             <div className="min-w-0">
-              <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Exam date</dt>
+              <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                Exam date
+              </dt>
               <dd className="mt-1 font-medium">
                 {examDate ? fmt(examDate.start_datetime) : "Not announced"}
-                {examDate?.is_tentative ? <span className="ml-1 text-xs text-muted-foreground">(tentative)</span> : null}
+                {examDate?.is_tentative ? (
+                  <span className="ml-1 text-xs text-muted-foreground">(tentative)</span>
+                ) : null}
               </dd>
             </div>
           </dl>
 
           <div>
-            <p className={cn("text-sm font-semibold", urgent ? "text-destructive" : "text-foreground")}>{line}</p>
+            <p
+              className={cn(
+                "text-sm font-semibold",
+                urgent ? "text-destructive" : "text-foreground",
+              )}
+            >
+              {line}
+            </p>
             {status.focus && countdown && !countdown.expired ? (
-              <div className="mt-2 flex items-baseline gap-3">
+              <div className="mt-2 grid grid-cols-3 gap-2 text-center">
                 {(["days", "hours", "minutes"] as const).map((unit) => (
-                  <span key={unit} className="flex items-baseline gap-1 overflow-hidden">
+                  <span
+                    key={unit}
+                    className="flex min-w-0 flex-col items-center rounded-lg bg-secondary/50 px-1.5 py-2"
+                  >
                     <AnimatePresence mode="popLayout" initial={false}>
                       <motion.span
                         key={countdown[unit]}
@@ -169,15 +208,25 @@ export function ExamCard({
                         exit={{ y: -8, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                         suppressHydrationWarning
-                        className={cn("inline-block text-2xl font-bold tabular-nums", urgent ? "text-destructive" : "text-foreground")}
+                        className={cn(
+                          "inline-block text-xl font-bold tabular-nums leading-none sm:text-2xl",
+                          urgent ? "text-destructive" : "text-foreground",
+                        )}
                       >
                         {countdown[unit]}
                       </motion.span>
                     </AnimatePresence>
-                    <span className="text-xs text-muted-foreground">{unit.slice(0, 1)}</span>
+                    <span className="mt-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                      {unit}
+                    </span>
                   </span>
                 ))}
-                <span className="ml-auto truncate text-xs text-muted-foreground">
+              </div>
+            ) : null}
+            {status.focus ? (
+              <div className="mt-2 border-t border-border/60 pt-2 text-right text-xs text-muted-foreground">
+                <span className="break-words">{fmt(status.focus.start_datetime)}</span>
+                <span className="ml-1">
                   {status.focusLabel} · {status.focus.label}
                 </span>
               </div>
@@ -207,10 +256,16 @@ export function ExamCard({
               whileTap={{ scale: 0.95 }}
               onClick={() => onToggleFollow(exam.slug)}
               aria-pressed={followed}
-              aria-label={followed ? `Turn off reminders for ${exam.short_code}` : `Remind me about ${exam.short_code}`}
+              aria-label={
+                followed
+                  ? `Turn off reminders for ${exam.short_code}`
+                  : `Remind me about ${exam.short_code}`
+              }
               className={cn(
                 "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border px-3 text-sm font-medium transition-colors duration-200",
-                followed ? "border-primary bg-primary/10 text-primary" : "bg-card hover:bg-secondary",
+                followed
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "bg-card hover:bg-secondary",
               )}
             >
               {followed ? <BellRing className="size-4" /> : <Bell className="size-4" />}
