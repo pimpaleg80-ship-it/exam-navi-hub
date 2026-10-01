@@ -1,6 +1,6 @@
 import type { Exam, ExamDate } from "@/data/exams";
 
-export const SITE_URL = "https://www.examalertindiaonline.com";
+export const SITE_URL = "https://examalertindiaonline.com";
 
 const iso = (value?: string) => {
   if (!value) return undefined;

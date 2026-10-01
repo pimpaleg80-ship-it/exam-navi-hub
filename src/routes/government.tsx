@@ -11,15 +11,19 @@ import { useMemo, useState } from "react";
 import { GovernmentExamCard } from "@/components/government-exam-card";
 import {
   GOVERNMENT_CATEGORIES,
-  GOVERNMENT_EXAMS,
   GOVERNMENT_STATES,
   type GovernmentCategory,
 } from "@/data/government-exams";
 import { cn } from "@/lib/utils";
 import { SITE_URL } from "@/lib/exam-jsonld";
+import { getGovernmentExams } from "@/lib/government-exams.functions";
+import { LanguageSelector } from "@/components/language-selector";
+import { useLanguage } from "@/lib/i18n";
+import { ExamNotes } from "@/components/exam-notes";
 
 export const Route = createFileRoute("/government")({
   staticData: { sitemap: true },
+  loader: () => getGovernmentExams(),
   head: () => ({
     meta: [
       { title: "Government & Civil Services — EXAM ALERT INDIA" },
@@ -44,6 +48,8 @@ export const Route = createFileRoute("/government")({
 });
 
 function GovernmentDashboard() {
+  const { t } = useLanguage();
+  const { exams: governmentExams } = Route.useLoaderData();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<GovernmentCategory | "all">("all");
   const [state, setState] = useState("All India");
@@ -54,26 +60,35 @@ function GovernmentDashboard() {
   };
   const exams = useMemo(
     () =>
-      GOVERNMENT_EXAMS.filter((exam) => {
-        const haystack =
-          `${exam.code} ${exam.name} ${exam.conductingBody} ${exam.tags.join(" ")}`.toLowerCase();
-        return (
-          (!query || haystack.includes(query.toLowerCase())) &&
-          (category === "all" || exam.category === category) &&
-          (state === "All India" || exam.state === state)
-        );
-      }).sort((a, b) => {
-        const left = a.applicationDeadline ? new Date(a.applicationDeadline).getTime() : Number.MAX_SAFE_INTEGER;
-        const right = b.applicationDeadline ? new Date(b.applicationDeadline).getTime() : Number.MAX_SAFE_INTEGER;
-        return left - right;
-      }),
-    [category, query, state],
+      governmentExams
+        .filter((exam) => {
+          const haystack =
+            `${exam.code} ${exam.name} ${exam.conductingBody} ${exam.tags.join(" ")}`.toLowerCase();
+          return (
+            (!query || haystack.includes(query.toLowerCase())) &&
+            (category === "all" || exam.category === category) &&
+            (state === "All India" || exam.state === state)
+          );
+        })
+        .sort((a, b) => {
+          const left = a.applicationDeadline
+            ? new Date(a.applicationDeadline).getTime()
+            : Number.MAX_SAFE_INTEGER;
+          const right = b.applicationDeadline
+            ? new Date(b.applicationDeadline).getTime()
+            : Number.MAX_SAFE_INTEGER;
+          return left - right;
+        }),
+    [category, governmentExams, query, state],
   );
-  const closingSoon = GOVERNMENT_EXAMS.filter((exam) => {
+  const closingSoon = governmentExams.filter((exam) => {
     const remaining = daysUntil(exam.applicationDeadline);
     return remaining !== null && remaining >= 0 && remaining <= 30;
   });
-  const openNow = GOVERNMENT_EXAMS.filter((exam) => daysUntil(exam.applicationDeadline) !== null && daysUntil(exam.applicationDeadline)! >= 0).length;
+  const openNow = governmentExams.filter((exam) => {
+    const remaining = daysUntil(exam.applicationDeadline);
+    return remaining !== null && remaining >= 0;
+  }).length;
 
   return (
     <main className="min-h-screen bg-background">
@@ -86,16 +101,19 @@ function GovernmentDashboard() {
             >
               <ArrowLeft className="size-4" /> EXAM ALERT INDIA
             </Link>
-            <div className="flex rounded-full border bg-background p-1 text-sm">
-              <Link
-                to="/"
-                className="rounded-full px-3 py-1.5 text-muted-foreground hover:text-foreground"
-              >
-                PCMB entrances
-              </Link>
-              <span className="rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground">
-                Government exams
-              </span>
+            <div className="flex max-w-full flex-wrap items-center justify-end gap-2 sm:gap-3">
+              <LanguageSelector />
+              <div className="flex max-w-full flex-wrap rounded-full border bg-background p-1 text-xs sm:text-sm">
+                <Link
+                  to="/"
+                  className="rounded-full px-2 py-1.5 text-muted-foreground hover:text-foreground sm:px-3"
+                >
+                  PCMB entrances
+                </Link>
+                <span className="rounded-full bg-primary px-2 py-1.5 font-semibold text-primary-foreground sm:px-3">
+                  {t("Government & civil services")}
+                </span>
+              </div>
             </div>
           </nav>
           <div className="mt-10 max-w-3xl">
@@ -114,7 +132,7 @@ function GovernmentDashboard() {
             <Stat
               icon={<BriefcaseBusiness className="size-4" />}
               label="Exams tracked"
-              value={GOVERNMENT_EXAMS.length}
+              value={governmentExams.length}
             />
             <Stat
               icon={<ShieldCheck className="size-4" />}
@@ -179,7 +197,7 @@ function GovernmentDashboard() {
                 <p className="text-xs font-bold uppercase tracking-wider text-primary">
                   Deadline radar
                 </p>
-                <h2 className="mt-1 text-xl font-bold">What needs attention next</h2>
+                <h2 className="mt-1 text-xl font-bold">{t("What needs attention next")}</h2>
               </div>
               <CalendarClock className="size-6 text-primary" />
             </div>
@@ -219,7 +237,7 @@ function GovernmentDashboard() {
             <p className="text-xs font-bold uppercase tracking-wider opacity-80">
               Explore the ecosystem
             </p>
-            <h2 className="mt-1 text-xl font-bold">Plan beyond one exam</h2>
+            <h2 className="mt-1 text-xl font-bold">{t("Plan beyond one exam")}</h2>
             <p className="mt-2 text-sm opacity-85">
               Compare eligibility, mode and deadlines across{" "}
               {Object.keys(GOVERNMENT_CATEGORIES).length} career tracks.
@@ -258,6 +276,7 @@ function GovernmentDashboard() {
             ))}
           </div>
         )}
+        <ExamNotes />
       </div>
     </main>
   );
