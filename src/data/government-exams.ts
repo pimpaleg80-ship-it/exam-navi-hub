@@ -8,8 +8,8 @@ export type GovernmentExam = {
   conductingBody: string;
   category: GovernmentCategory;
   state: string;
-  applicationDeadline: string;
-  examDate: string;
+  applicationDeadline: string | null;
+  examDate: string | null;
   mode: "Online" | "Offline";
   eligibility: string;
   officialUrl: string;
@@ -40,12 +40,8 @@ export const GOVERNMENT_STATES = [
   "Tamil Nadu",
 ];
 
-const date = (month: number, day: number) =>
-  `2027-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T23:59:00+05:30`;
-const exam = (month: number, day: number) =>
-  `2027-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T09:00:00+05:30`;
-
-// Frontend-only planning records. Confirm every date on the official portal before applying.
+// Official authorities are the only source of truth. If a date is not yet published,
+// we intentionally leave it as null instead of inventing a date.
 export const GOVERNMENT_EXAMS: GovernmentExam[] = [
   {
     slug: "upsc-cse",
@@ -54,8 +50,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Union Public Service Commission",
     category: "civil-services",
     state: "All India",
-    applicationDeadline: date(2, 24),
-    examDate: exam(5, 30),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Offline",
     eligibility: "Graduate degree; age 21–32 years",
     officialUrl: "https://upsc.gov.in",
@@ -68,8 +64,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Union Public Service Commission",
     category: "police-defense",
     state: "All India",
-    applicationDeadline: date(1, 10),
-    examDate: exam(4, 11),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Offline",
     eligibility: "Graduate degree; unmarried candidates",
     officialUrl: "https://upsc.gov.in",
@@ -82,8 +78,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Union Public Service Commission",
     category: "police-defense",
     state: "All India",
-    applicationDeadline: date(3, 16),
-    examDate: exam(8, 1),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Offline",
     eligibility: "Graduate degree; age 20–25 years",
     officialUrl: "https://upsc.gov.in",
@@ -96,8 +92,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Staff Selection Commission",
     category: "staff-selection",
     state: "All India",
-    applicationDeadline: date(6, 30),
-    examDate: exam(8, 15),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "Graduate degree; age varies by post",
     officialUrl: "https://ssc.gov.in",
@@ -110,8 +106,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Staff Selection Commission",
     category: "staff-selection",
     state: "All India",
-    applicationDeadline: date(5, 7),
-    examDate: exam(7, 1),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "12th pass; age 18–27 years",
     officialUrl: "https://ssc.gov.in",
@@ -124,8 +120,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Staff Selection Commission",
     category: "police-defense",
     state: "All India",
-    applicationDeadline: date(12, 20),
-    examDate: exam(2, 5),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "10th pass; age 18–23 years",
     officialUrl: "https://ssc.gov.in",
@@ -138,8 +134,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Institute of Banking Personnel Selection",
     category: "banking",
     state: "All India",
-    applicationDeadline: date(7, 28),
-    examDate: exam(9, 20),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "Graduate degree in any discipline",
     officialUrl: "https://ibps.in",
@@ -152,8 +148,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "State Bank of India",
     category: "banking",
     state: "All India",
-    applicationDeadline: date(2, 15),
-    examDate: exam(3, 8),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "Graduate degree; age 21–30 years",
     officialUrl: "https://sbi.co.in",
@@ -166,8 +162,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Railway Recruitment Boards",
     category: "railways",
     state: "All India",
-    applicationDeadline: date(1, 31),
-    examDate: exam(6, 12),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "12th or graduate level, post dependent",
     officialUrl: "https://indianrailways.gov.in",
@@ -180,8 +176,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Railway Recruitment Boards",
     category: "railways",
     state: "All India",
-    applicationDeadline: date(3, 2),
-    examDate: exam(9, 1),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "10th pass or ITI; age 18–33 years",
     officialUrl: "https://indianrailways.gov.in",
@@ -194,8 +190,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Central Board of Secondary Education",
     category: "teaching",
     state: "All India",
-    applicationDeadline: date(9, 18),
-    examDate: exam(12, 7),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "D.El.Ed / B.Ed qualification as applicable",
     officialUrl: "https://ctet.nic.in",
@@ -208,8 +204,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "National Testing Agency",
     category: "teaching",
     state: "All India",
-    applicationDeadline: date(4, 20),
-    examDate: exam(6, 25),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Online",
     eligibility: "Master’s degree with required percentage",
     officialUrl: "https://ugcnet.nta.nic.in",
@@ -222,8 +218,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Maharashtra Public Service Commission",
     category: "civil-services",
     state: "Maharashtra",
-    applicationDeadline: date(2, 28),
-    examDate: exam(5, 7),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Offline",
     eligibility: "Graduate degree; Marathi language requirement",
     officialUrl: "https://mpsc.gov.in",
@@ -236,8 +232,8 @@ export const GOVERNMENT_EXAMS: GovernmentExam[] = [
     conductingBody: "Uttar Pradesh Public Service Commission",
     category: "civil-services",
     state: "Uttar Pradesh",
-    applicationDeadline: date(3, 22),
-    examDate: exam(6, 18),
+    applicationDeadline: null,
+    examDate: null,
     mode: "Offline",
     eligibility: "Graduate degree; post-specific qualifications",
     officialUrl: "https://uppsc.up.nic.in",

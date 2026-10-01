@@ -3,8 +3,22 @@ import type { GovernmentExam } from "@/data/government-exams";
 import { GOVERNMENT_CATEGORIES } from "@/data/government-exams";
 import { cn } from "@/lib/utils";
 
-export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; daysLeft: number }) {
-  const closingSoon = daysLeft <= 30;
+export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; daysLeft: number | null }) {
+  const closingSoon = daysLeft !== null && daysLeft <= 30;
+  const applicationDeadlineLabel = exam.applicationDeadline
+    ? new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "Not announced";
+  const examDateLabel = exam.examDate
+    ? new Date(exam.examDate).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+    : "Not announced";
   return (
     <article
       className={cn(
@@ -30,22 +44,12 @@ export function GovernmentExamCard({ exam, daysLeft }: { exam: GovernmentExam; d
         <div>
           <p className="text-xs text-muted-foreground">Apply by</p>
           <p className={cn("font-semibold", closingSoon && "text-destructive")}>
-            {new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
+            {applicationDeadlineLabel}
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground">Exam date</p>
-          <p className="font-semibold">
-            {new Date(exam.examDate).toLocaleDateString("en-IN", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </p>
+          <p className="font-semibold">{examDateLabel}</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
