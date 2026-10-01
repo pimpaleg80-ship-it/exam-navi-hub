@@ -26,8 +26,8 @@ export function ExamNotes() {
       <dl className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {notes.map(([term, meaning]) => (
           <div key={term} className="rounded-xl border border-white/10 bg-[#081a33]/60 p-4">
-            <dt className="text-sm font-semibold">{t(term)}</dt>
-            <dd className="mt-1 text-xs leading-5 text-[#c5d1e1]">{t(meaning)}</dd>
+            <dt className="text-sm font-semibold">{t(term ?? "")}</dt>
+            <dd className="mt-1 text-xs leading-5 text-[#c5d1e1]">{t(meaning ?? "")}</dd>
           </div>
         ))}
       </dl>

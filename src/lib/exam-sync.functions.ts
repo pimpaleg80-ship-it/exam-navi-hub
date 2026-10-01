@@ -22,7 +22,7 @@ export const getExamRevisions = createServerFn({ method: "GET" })
     if (process.env["SUPABASE_URL"] && process.env["SUPABASE_SERVICE_ROLE_KEY"]) {
       try {
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const { data: remoteRevisions, error } = await supabaseAdmin
+        const { data: remoteRevisions, error } = await (supabaseAdmin as any)
           .from("exam_revisions")
           .select(
             "exam_slug,year,event_type,label,start_datetime,end_datetime,is_tentative,is_extended,removed,revised_at,source_url,note",
@@ -33,7 +33,7 @@ export const getExamRevisions = createServerFn({ method: "GET" })
         if (error) throw error;
         revisions = (remoteRevisions ?? []) as ExamRevision[];
 
-        const { data: remoteSources, error: sourceError } = await supabaseAdmin
+        const { data: remoteSources, error: sourceError } = await (supabaseAdmin as any)
           .from("exam_sources")
           .select("exam_slug,official_url,application_url,conducting_body,source_name,updated_at")
           .order("exam_slug", { ascending: true });

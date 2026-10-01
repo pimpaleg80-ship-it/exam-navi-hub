@@ -120,7 +120,7 @@ function ExamDirectory() {
             </Link>
           </div>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {GOVERNMENT_CATEGORIES.map((category) => {
+            {(Object.keys(GOVERNMENT_CATEGORIES) as (keyof typeof GOVERNMENT_CATEGORIES)[]).map((category) => {
               const count = GOVERNMENT_EXAMS.filter((exam) => exam.category === category).length;
               return (
                 <Link

@@ -52,7 +52,7 @@ export function SlideUp({
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration, delay, ease: [0.22, 1, 0.36, 1] }
+          transition: { duration, delay: delay ?? 0, ease: [0.22, 1, 0.36, 1] }
         }
       }}
       initial="hidden"
@@ -79,7 +79,7 @@ export function FadeIn({
         hidden: { opacity: 0 },
         visible: {
           opacity: 1,
-          transition: { duration, delay, ease: "easeInOut" }
+          transition: { duration, delay: delay ?? 0, ease: "easeInOut" }
         }
       }}
       initial="hidden"
