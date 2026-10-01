@@ -16,7 +16,7 @@ export function LanguageSelector({ dark = false }: { dark?: boolean }) {
     window.localStorage.setItem(LANGUAGE_KEY, value);
     window.dispatchEvent(new CustomEvent("exam-alert-language-change", { detail: value }));
     document.documentElement.lang = value === "en" ? "en-IN" : value;
-    document.documentElement.dataset.language = value;
+    document.documentElement.dataset["language"] = value;
   };
 
   return (

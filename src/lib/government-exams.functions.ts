@@ -47,7 +47,7 @@ export const getGovernmentExams = createServerFn({ method: "GET" }).handler(asyn
 
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from("government_exams")
       .select(
         "slug,code,name,conducting_body,category,state,application_deadline,exam_date,mode,eligibility,official_url,tags",

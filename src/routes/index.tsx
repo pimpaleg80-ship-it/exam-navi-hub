@@ -363,9 +363,10 @@ function Dashboard() {
           </p>
         ) : (
           <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {exams.map((exam) => (
+            {exams.map((exam, i) => (
               <ExamCard
                 key={exam.slug}
+                index={i}
                 exam={exam}
                 now={now}
                 followed={follow.has(exam.slug)}
