@@ -99,7 +99,7 @@ export function ExamCard({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.07 }}
-      whileHover={reduce ? undefined : { y: -4, scale: 1.01 }}
+      {...(reduce ? {} : { whileHover: { y: -4, scale: 1.01 } })}
       className="h-full [perspective:1000px]"
     >
       <article
