@@ -48,7 +48,10 @@ function GovernmentDashboard() {
   const [category, setCategory] = useState<GovernmentCategory | "all">("all");
   const [state, setState] = useState("All India");
   const today = Date.now();
-  const daysUntil = (value: string) => Math.ceil((new Date(value).getTime() - today) / 86400000);
+  const daysUntil = (value: string | null) => {
+    if (!value) return null;
+    return Math.ceil((new Date(value).getTime() - today) / 86400000);
+  };
   const exams = useMemo(
     () =>
       GOVERNMENT_EXAMS.filter((exam) => {
@@ -59,18 +62,18 @@ function GovernmentDashboard() {
           (category === "all" || exam.category === category) &&
           (state === "All India" || exam.state === state)
         );
-      }).sort(
-        (a, b) =>
-          new Date(a.applicationDeadline).getTime() - new Date(b.applicationDeadline).getTime(),
-      ),
+      }).sort((a, b) => {
+        const left = a.applicationDeadline ? new Date(a.applicationDeadline).getTime() : Number.MAX_SAFE_INTEGER;
+        const right = b.applicationDeadline ? new Date(b.applicationDeadline).getTime() : Number.MAX_SAFE_INTEGER;
+        return left - right;
+      }),
     [category, query, state],
   );
-  const closingSoon = GOVERNMENT_EXAMS.filter(
-    (exam) => daysUntil(exam.applicationDeadline) >= 0 && daysUntil(exam.applicationDeadline) <= 30,
-  );
-  const openNow = GOVERNMENT_EXAMS.filter(
-    (exam) => daysUntil(exam.applicationDeadline) >= 0,
-  ).length;
+  const closingSoon = GOVERNMENT_EXAMS.filter((exam) => {
+    const remaining = daysUntil(exam.applicationDeadline);
+    return remaining !== null && remaining >= 0 && remaining <= 30;
+  });
+  const openNow = GOVERNMENT_EXAMS.filter((exam) => daysUntil(exam.applicationDeadline) !== null && daysUntil(exam.applicationDeadline)! >= 0).length;
 
   return (
     <main className="min-h-screen bg-background">
@@ -181,27 +184,30 @@ function GovernmentDashboard() {
               <CalendarClock className="size-6 text-primary" />
             </div>
             <div className="mt-4 space-y-3">
-              {closingSoon.slice(0, 3).map((exam) => (
-                <div
-                  key={exam.slug}
-                  className="flex items-center justify-between gap-3 rounded-xl bg-secondary/60 px-3 py-2.5 text-sm"
-                >
-                  <div>
-                    <span className="font-semibold">{exam.code}</span>
-                    <p className="text-xs text-muted-foreground">
-                      Apply by{" "}
-                      {new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
+              {closingSoon.slice(0, 3).map((exam) => {
+                const deadline = exam.applicationDeadline
+                  ? new Date(exam.applicationDeadline).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "Not announced";
+                const remaining = daysUntil(exam.applicationDeadline);
+                return (
+                  <div
+                    key={exam.slug}
+                    className="flex items-center justify-between gap-3 rounded-xl bg-secondary/60 px-3 py-2.5 text-sm"
+                  >
+                    <div>
+                      <span className="font-semibold">{exam.code}</span>
+                      <p className="text-xs text-muted-foreground">Apply by {deadline}</p>
+                    </div>
+                    <span className="text-right text-destructive">
+                      {remaining === null ? "Not announced" : `${remaining} days left`}
+                    </span>
                   </div>
-                  <span className="text-right text-destructive">
-                    {daysUntil(exam.applicationDeadline)} days left
-                  </span>
-                </div>
-              ))}
+                );
+              })}
               {closingSoon.length === 0 && (
                 <p className="rounded-xl bg-secondary/60 p-3 text-sm text-muted-foreground">
                   No application deadlines in the next 30 days.
