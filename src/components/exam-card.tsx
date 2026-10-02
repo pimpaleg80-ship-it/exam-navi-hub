@@ -108,19 +108,19 @@ export function ExamCard({
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.07 }}
       {...(reduce ? {} : { whileHover: { y: -4, scale: 1.01 } })}
-      className="h-full [perspective:1000px]"
+      className="h-full min-w-0 w-full [perspective:1000px]"
     >
       <article
         ref={ref}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
         className={cn(
-          "premium-card group flex h-full flex-col gap-4 p-5",
+          "premium-card group flex h-full min-w-0 w-full flex-col gap-4 p-4 sm:p-5",
           urgent && "premium-card-urgent",
         )}
       >
-        <div className="premium-card-content flex h-full flex-col gap-4">
-          <header className="flex items-start justify-between gap-3">
+        <div className="premium-card-content flex h-full min-w-0 flex-col gap-4">
+          <header className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
             <div className="flex min-w-0 items-start gap-3">
               <div className="grid size-11 shrink-0 place-items-center rounded-xl border bg-gradient-to-br from-secondary to-card text-sm font-bold tracking-tight text-primary">
                 {exam.short_code
@@ -164,18 +164,18 @@ export function ExamCard({
             ) : null}
           </div>
 
-          <dl className="grid grid-cols-2 gap-3 rounded-xl border bg-secondary/40 p-3 text-sm">
+          <dl className="grid min-w-0 grid-cols-1 gap-3 rounded-xl border bg-secondary/40 p-3 text-sm sm:grid-cols-2">
             <div className="min-w-0">
               <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                 Registration
               </dt>
-              <dd className="mt-1 font-medium">{regRange ?? "Not announced"}</dd>
+              <dd className="mt-1 break-words font-medium">{regRange ?? "Not announced"}</dd>
             </div>
             <div className="min-w-0">
               <dt className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                 Exam date
               </dt>
-              <dd className="mt-1 font-medium">
+              <dd className="mt-1 break-words font-medium">
                 {examDate ? fmt(examDate.start_datetime) : "Not announced"}
                 {examDate?.is_tentative ? (
                   <span className="ml-1 text-xs text-muted-foreground">(tentative)</span>
@@ -237,12 +237,13 @@ export function ExamCard({
             href={exam.official_website}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex w-fit items-center gap-1.5 text-xs font-medium text-success hover:underline"
+            className="inline-flex min-w-0 max-w-full items-start gap-1.5 break-words text-xs font-medium text-success hover:underline"
           >
-            <ShieldCheck className="size-3.5" /> Official source · {exam.conducting_body}
+            <ShieldCheck className="mt-0.5 size-3.5 shrink-0" />
+            <span className="min-w-0 break-words">Official source · {exam.conducting_body}</span>
           </a>
 
-          <footer className="mt-auto grid grid-cols-2 gap-2">
+          <footer className="mt-auto grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
             <Link
               to="/exam/$slug"
               params={{ slug: exam.slug }}
@@ -275,7 +276,7 @@ export function ExamCard({
               href={exam.application_url}
               target="_blank"
               rel="noreferrer noopener"
-              className="col-span-2 inline-flex items-center justify-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
+              className="inline-flex min-w-0 items-center justify-center gap-1 break-words text-center text-xs font-medium text-muted-foreground transition-colors hover:text-primary sm:col-span-2"
             >
               Apply on official portal <ExternalLink className="size-3" />
             </a>
