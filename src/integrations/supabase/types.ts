@@ -14,7 +14,402 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      exam_date_revisions: {
+        Row: {
+          created_at: string
+          end_datetime: string | null
+          event_type: string
+          exam_slug: string
+          id: string
+          is_extended: boolean
+          is_tentative: boolean
+          label: string | null
+          note: string | null
+          source_url: string
+          start_datetime: string | null
+          status: string
+          updated_at: string
+          verified_at: string | null
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          end_datetime?: string | null
+          event_type: string
+          exam_slug: string
+          id?: string
+          is_extended?: boolean
+          is_tentative?: boolean
+          label?: string | null
+          note?: string | null
+          source_url: string
+          start_datetime?: string | null
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          year: number
+        }
+        Update: {
+          created_at?: string
+          end_datetime?: string | null
+          event_type?: string
+          exam_slug?: string
+          id?: string
+          is_extended?: boolean
+          is_tentative?: boolean
+          label?: string | null
+          note?: string | null
+          source_url?: string
+          start_datetime?: string | null
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      exam_notifications: {
+        Row: {
+          content_hash: string
+          created_at: string
+          detected_at: string
+          document_url: string | null
+          exam_id: string
+          id: string
+          is_new: boolean
+          is_verified: boolean
+          last_seen_at: string
+          notification_type: string
+          official_url: string
+          published_at: string | null
+          source_id: string
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content_hash: string
+          created_at?: string
+          detected_at?: string
+          document_url?: string | null
+          exam_id: string
+          id?: string
+          is_new?: boolean
+          is_verified?: boolean
+          last_seen_at?: string
+          notification_type?: string
+          official_url: string
+          published_at?: string | null
+          source_id: string
+          status?: string
+          summary: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content_hash?: string
+          created_at?: string
+          detected_at?: string
+          document_url?: string | null
+          exam_id?: string
+          id?: string
+          is_new?: boolean
+          is_verified?: boolean
+          last_seen_at?: string
+          notification_type?: string
+          official_url?: string
+          published_at?: string | null
+          source_id?: string
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_notifications_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "official_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exam_revisions: {
+        Row: {
+          end_datetime: string | null
+          event_type: string
+          exam_slug: string
+          id: number
+          is_extended: boolean
+          is_tentative: boolean
+          label: string | null
+          note: string | null
+          removed: boolean
+          revised_at: string
+          source_url: string | null
+          start_datetime: string | null
+          year: number
+        }
+        Insert: {
+          end_datetime?: string | null
+          event_type: string
+          exam_slug: string
+          id?: number
+          is_extended?: boolean
+          is_tentative?: boolean
+          label?: string | null
+          note?: string | null
+          removed?: boolean
+          revised_at?: string
+          source_url?: string | null
+          start_datetime?: string | null
+          year: number
+        }
+        Update: {
+          end_datetime?: string | null
+          event_type?: string
+          exam_slug?: string
+          id?: number
+          is_extended?: boolean
+          is_tentative?: boolean
+          label?: string | null
+          note?: string | null
+          removed?: boolean
+          revised_at?: string
+          source_url?: string | null
+          start_datetime?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      exam_sources: {
+        Row: {
+          application_url: string
+          conducting_body: string
+          exam_slug: string
+          official_url: string
+          source_name: string
+          updated_at: string
+        }
+        Insert: {
+          application_url: string
+          conducting_body: string
+          exam_slug: string
+          official_url: string
+          source_name: string
+          updated_at?: string
+        }
+        Update: {
+          application_url?: string
+          conducting_body?: string
+          exam_slug?: string
+          official_url?: string
+          source_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      exam_update_history: {
+        Row: {
+          created_at: string
+          detected_at: string
+          exam_id: string
+          field_name: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          source_id: string
+          source_url: string
+        }
+        Insert: {
+          created_at?: string
+          detected_at?: string
+          exam_id: string
+          field_name: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          source_id: string
+          source_url: string
+        }
+        Update: {
+          created_at?: string
+          detected_at?: string
+          exam_id?: string
+          field_name?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          source_id?: string
+          source_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_update_history_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "official_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      government_exams: {
+        Row: {
+          application_deadline: string
+          category: string
+          code: string
+          conducting_body: string
+          eligibility: string
+          exam_date: string
+          id: number
+          is_tentative: boolean
+          mode: string
+          name: string
+          official_url: string
+          slug: string
+          source_url: string | null
+          state: string
+          tags: string[]
+          updated_at: string
+          verified_at: string | null
+        }
+        Insert: {
+          application_deadline: string
+          category: string
+          code: string
+          conducting_body: string
+          eligibility: string
+          exam_date: string
+          id?: number
+          is_tentative?: boolean
+          mode: string
+          name: string
+          official_url: string
+          slug: string
+          source_url?: string | null
+          state: string
+          tags?: string[]
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Update: {
+          application_deadline?: string
+          category?: string
+          code?: string
+          conducting_body?: string
+          eligibility?: string
+          exam_date?: string
+          id?: number
+          is_tentative?: boolean
+          mode?: string
+          name?: string
+          official_url?: string
+          slug?: string
+          source_url?: string | null
+          state?: string
+          tags?: string[]
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      official_sources: {
+        Row: {
+          check_interval_minutes: number
+          created_at: string
+          etag: string | null
+          exam_id: string | null
+          id: string
+          last_checked_at: string | null
+          last_content_hash: string | null
+          last_modified: string | null
+          last_success_at: string | null
+          name: string
+          organization: string
+          source_type: string
+          source_url: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          check_interval_minutes?: number
+          created_at?: string
+          etag?: string | null
+          exam_id?: string | null
+          id?: string
+          last_checked_at?: string | null
+          last_content_hash?: string | null
+          last_modified?: string | null
+          last_success_at?: string | null
+          name: string
+          organization: string
+          source_type?: string
+          source_url: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          check_interval_minutes?: number
+          created_at?: string
+          etag?: string | null
+          exam_id?: string | null
+          id?: string
+          last_checked_at?: string | null
+          last_content_hash?: string | null
+          last_modified?: string | null
+          last_success_at?: string | null
+          name?: string
+          organization?: string
+          source_type?: string
+          source_url?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      source_monitor_logs: {
+        Row: {
+          checked_at: string
+          duration_ms: number
+          error_message: string | null
+          http_status: number | null
+          id: string
+          items_found: number
+          source_id: string
+          status: string
+        }
+        Insert: {
+          checked_at?: string
+          duration_ms?: number
+          error_message?: string | null
+          http_status?: number | null
+          id?: string
+          items_found?: number
+          source_id: string
+          status: string
+        }
+        Update: {
+          checked_at?: string
+          duration_ms?: number
+          error_message?: string | null
+          http_status?: number | null
+          id?: string
+          items_found?: number
+          source_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "source_monitor_logs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "official_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
