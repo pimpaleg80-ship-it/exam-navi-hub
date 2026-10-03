@@ -12,11 +12,12 @@ export const Route = createFileRoute("/robots.txt")({
             "User-agent: *",
             "Allow: /",
             "Disallow: /api/",
-            "Disallow: /auth/",
-            "Disallow: /admin/",
+            "Disallow: /admin",
+            "Disallow: /auth",
+            "Disallow: /login",
+            "Disallow: /signup",
             `Sitemap: ${SITE_URL}/sitemap.xml`,
-            "",
-          ].join("\n"),
+          ].join("\n") + "\n",
           {
             headers: {
               "Content-Type": "text/plain; charset=utf-8",

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { examsForCycle, type Exam } from "@/data/exams";
 import { getExamRevisions } from "@/lib/exam-sync.functions";
-import { applyRevisions, sanitizeRevisions } from "@/lib/exam-sync";
+import { applyRevisions, applySources, sanitizeRevisions, sanitizeSources } from "@/lib/exam-sync";
 
 /** How often every open tab re-checks the official date feed. */
 export const SYNC_INTERVAL_MS = 5 * 60 * 1000;
@@ -53,7 +53,8 @@ export function useExamSync(year: number): ExamSyncState {
   const exams = useMemo<Exam[]>(() => {
     const base = safeCycleExams(year);
     try {
-      return applyRevisions(base, sanitizeRevisions(query.data?.revisions));
+      const withSources = applySources(base, sanitizeSources(query.data?.sources));
+      return applyRevisions(withSources, sanitizeRevisions(query.data?.revisions));
     } catch {
       return base;
     }

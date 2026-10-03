@@ -1,0 +1,9 @@
+{
+  "name": "Exam Alert India",
+  "short_name": "Exam Alert India",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#081a33",
+  "theme_color": "#081a33",
+  "description": "Indian entrance and competitive exam dates, deadlines and official updates."
+}
