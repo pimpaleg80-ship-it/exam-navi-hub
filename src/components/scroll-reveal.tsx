@@ -7,16 +7,24 @@ type ScrollRevealProps = {
   className?: string;
 } & Omit<HTMLAttributes<HTMLDivElement>, "children" | "className">;
 
-export function ScrollReveal({
-  children,
-  className,
-  ...props
-}: ScrollRevealProps) {
-  const ref = useScrollReveal<HTMLDivElement>();
+import { motion, type HTMLMotionProps } from "framer-motion";
 
+type FramerScrollRevealProps = {
+  children: ReactNode;
+  className?: string;
+} & Omit<HTMLMotionProps<"div">, "children" | "className">;
+
+export function ScrollReveal({ children, className, ...props }: FramerScrollRevealProps) {
   return (
-    <div ref={ref} className={cn("reveal-on-scroll", className)} {...props}>
+    <motion.div
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={cn(className)}
+      {...props}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

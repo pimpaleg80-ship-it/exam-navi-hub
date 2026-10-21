@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Bell, BellRing, ExternalLink } from "lucide-react";
 import { BASE_CYCLE_YEAR, CATEGORY_META, getExam, shiftExamToCycle } from "@/data/exams";
 import { ISTTime, formatCountdown, getExamStatus, nextMilestone } from "@/lib/exam-status";
+import { motion, AnimatePresence } from "framer-motion";
+import { FadeIn, SlideUp, StaggerContainer } from "@/components/ui/animations";
 import { useAttemptYear, useLocalList } from "@/hooks/use-tracker";
 import { RouteError } from "@/components/route-error";
 import { SITE_URL, examDetailJsonLd } from "@/lib/exam-jsonld";
@@ -91,37 +93,55 @@ function ExamDetail() {
             <ArrowLeft className="size-4" /> All exams
           </Link>
           <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
-                {exam.state ? ` · ${exam.state}` : ""}
-              </p>
-              <h1 className="mt-1 animate-fade-in text-3xl font-extrabold tracking-tight">
-                {exam.short_code}
-              </h1>
-              <p className="text-muted-foreground">{exam.full_name}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{exam.conducting_body}</p>
-            </div>
-            <button
+            <StaggerContainer delay={0.1}>
+              <SlideUp>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+                  {CATEGORY_META[exam.category]?.label ?? "Entrance exam"}
+                  {exam.state ? ` · ${exam.state}` : ""}
+                </p>
+              </SlideUp>
+              <SlideUp>
+                <h1 className="mt-1 text-3xl font-extrabold tracking-tight">
+                  {exam.short_code}
+                </h1>
+              </SlideUp>
+              <SlideUp>
+                <p className="text-muted-foreground">{exam.full_name}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{exam.conducting_body}</p>
+              </SlideUp>
+            </StaggerContainer>
+            <motion.button
               type="button"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => follow.toggle(exam.slug)}
               className={cn(
-                "inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-md active:translate-y-0",
+                "inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition-colors duration-200 hover:shadow-md",
                 follow.has(exam.slug)
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-input hover:bg-secondary",
               )}
             >
-              {follow.has(exam.slug) ? (
-                <BellRing className="size-4" />
-              ) : (
-                <Bell className="size-4" />
-              )}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={follow.has(exam.slug) ? "on" : "off"}
+                  initial={{ scale: 0.8, opacity: 0, rotate: follow.has(exam.slug) ? -45 : 45 }}
+                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                  exit={{ scale: 0.8, opacity: 0, rotate: follow.has(exam.slug) ? 45 : -45 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {follow.has(exam.slug) ? (
+                    <BellRing className="size-4" />
+                  ) : (
+                    <Bell className="size-4" />
+                  )}
+                </motion.div>
+              </AnimatePresence>
               {follow.has(exam.slug) ? "Alerts on" : "Get alerts"}
-            </button>
+            </motion.button>
           </div>
 
-          <div className="positive-sheen mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-primary/10 bg-secondary/60 p-4 shadow-soft">
+          <FadeIn delay={0.3} className="positive-sheen mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-primary/10 bg-secondary/60 p-4 shadow-soft">
             <span className="rounded-full bg-card px-3 py-1 text-xs font-semibold">
               {status.label}
             </span>
@@ -139,11 +159,12 @@ function ExamDetail() {
               href={exam.application_url}
               target="_blank"
               rel="noreferrer noopener"
-              className="relative z-[1] ml-auto inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-[transform,box-shadow,opacity] hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:translate-y-0"
+              className="relative z-[1] ml-auto group/btn inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:opacity-95 active:scale-95"
             >
-              Apply now <ExternalLink className="size-3.5" />
+              Apply now
+              <ExternalLink className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </a>
-          </div>
+          </FadeIn>
         </div>
       </div>
 
@@ -245,9 +266,10 @@ function ExamDetail() {
             href={exam.official_website}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-md active:translate-y-0"
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-input bg-card px-3 py-2 text-sm font-medium shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-secondary hover:shadow-md active:scale-95 group/btn"
           >
-            Official website <ExternalLink className="size-3.5" />
+            Official website
+            <ExternalLink className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
           </a>
           <AdSlot slot={AD_SLOTS.examDetail} />
         </ScrollReveal>

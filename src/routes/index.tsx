@@ -20,17 +20,23 @@ import { SITE_URL, examEventJsonLd, examListJsonLd } from "@/lib/exam-jsonld";
 import { cn } from "@/lib/utils";
 import { AdSlot } from "@/components/ad-slot";
 import { AD_SLOTS } from "@/lib/adsense";
-import { LatestNotifications } from "@/components/latest-notifications";
+import { LanguageSelector } from "@/components/language-selector";
+import { useLanguage } from "@/lib/i18n";
+import { ExamNotes } from "@/components/exam-notes";
+import { StaggerContainer, SlideUp, FadeIn } from "@/components/ui/animations";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
   head: () => ({
     meta: [
-      { title: "EXAM ALERT INDIA — PCMB Exam Deadline Tracker for Indian Students" },
+      {
+        title: "Exam Alert India – JEE, NEET, MHT-CET, UPSC, MPSC & Exam Updates",
+      },
       {
         name: "description",
         content:
-          "Track registration windows, admit cards and results for JEE, NEET, NDA, IISER and every state CET. Never miss a PCMB deadline again.",
+          "Get the latest JEE, NEET, MHT-CET, UPSC, MPSC and competitive exam notifications, application dates, deadlines, admit cards, results and important exam updates in one place.",
       },
       { property: "og:title", content: "EXAM ALERT INDIA — PCMB Exam Deadline Tracker" },
       {
@@ -67,6 +73,11 @@ const CATEGORIES = Object.keys(CATEGORY_META) as ExamCategory[];
 const STREAMS: Stream[] = ["PCM", "PCB", "PCMB"];
 
 function Dashboard() {
+  const { scrollY } = useScroll();
+  const navBg = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 0.85)"]);
+  const navBlur = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(12px)"]);
+
+  const { t } = useLanguage();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30_000);
@@ -119,11 +130,14 @@ function Dashboard() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#081a33]">
       <header className="border-b border-white/10 bg-[#081a33] text-white shadow-[0_18px_50px_-28px_rgba(8,26,51,0.75)]">
-        <nav className="border-b border-slate-200 bg-white text-[#081a33]">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-8">
+        <motion.nav
+          style={{ backgroundColor: navBg, backdropFilter: navBlur }}
+          className="sticky top-0 z-50 border-b border-slate-200/50 text-[#081a33] transition-shadow duration-300 shadow-sm"
+        >
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:flex-nowrap sm:gap-5 sm:px-8">
             <Link
               to="/"
-              className="group inline-flex items-center gap-3"
+              className="group inline-flex min-w-0 items-center gap-3"
               aria-label="EXAM ALERT INDIA home"
             >
               <span className="grid size-10 place-items-center bg-[#2d64eb] text-white shadow-[4px_4px_0_#081a33]">
@@ -137,11 +151,15 @@ function Dashboard() {
               <a href="#exams" className="transition-colors hover:text-[#2d64eb]">
                 Exams
               </a>
+              <Link to="/exams" className="transition-colors hover:text-[#2d64eb]">
+                Exam directory
+              </Link>
               <a href="#how-it-works" className="transition-colors hover:text-[#2d64eb]">
                 How it works
               </a>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="ml-auto flex max-w-full items-center gap-2 sm:gap-4">
+              <LanguageSelector />
               <a
                 href="#exams"
                 className="hidden text-xs font-bold uppercase tracking-[0.18em] hover:text-[#2d64eb] sm:inline"
@@ -156,56 +174,68 @@ function Dashboard() {
               </Link>
             </div>
           </div>
-        </nav>
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          <div>
-            <p className="animate-fade-in text-xs font-bold uppercase tracking-[0.24em] text-[#b5c4d9]">
-              <span className="mr-2 inline-block size-3 bg-[#2d64eb] align-[-1px]" />
-              Centralized exam intelligence · India
-            </p>
-            <h1 className="mt-7 max-w-3xl text-5xl font-black uppercase leading-[0.9] tracking-[-0.065em] text-white text-balance sm:text-7xl lg:text-[6.6rem]">
-              Never miss an
-              <span className="mt-2 block w-fit bg-[#2d64eb] px-2 pb-3 pt-1">exam update</span>
-            </h1>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-[#c5d1e1] sm:text-lg">
-              JEE Main, NEET, MHT-CET, IISER, NEST, CUET, NDA, UPSC, SSC, Railways and Banking —
-              every official date, notice and result, verified and in one place.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#exams"
-                className="inline-flex items-center gap-2 bg-[#2d64eb] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[5px_5px_0_#061227] transition hover:-translate-y-0.5 hover:bg-[#2456d1]"
-              >
-                Browse exams <ArrowRight className="size-4" />
-              </a>
-              <Link
-                to="/government"
-                className="inline-flex items-center gap-2 border border-white/70 px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-[#081a33]"
-              >
-                Government & civil services
-              </Link>
-            </div>
-          </div>
-          <div className="relative hidden min-h-[390px] lg:block">
-            <div className="absolute inset-4 rotate-2 border border-[#41658d] bg-[#102b4d] shadow-[12px_12px_0_#2d64eb]" />
-            <div className="absolute inset-0 overflow-hidden border border-[#6e8aaa] bg-[#173a62]">
+        </motion.nav>
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 relative overflow-hidden">
+          <StaggerContainer delay={0.1} className="relative z-10">
+            <SlideUp>
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#b5c4d9]">
+                <span className="mr-2 inline-block size-3 bg-[#2d64eb] align-[-1px]" />
+                {t("Centralized exam intelligence · India")}
+              </p>
+            </SlideUp>
+            <SlideUp>
+              <h1 className="mt-7 max-w-3xl text-4xl font-black uppercase leading-[0.95] tracking-[-0.065em] text-white text-balance sm:text-7xl sm:leading-[0.9] lg:text-[6.6rem]">
+                {t("Never miss an")}
+                <span className="mt-2 block w-fit max-w-full bg-[#2d64eb] px-2 pb-3 pt-1">
+                  {t("exam update")}
+                </span>
+              </h1>
+            </SlideUp>
+            <SlideUp>
+              <p className="mt-7 max-w-2xl text-base leading-8 text-[#c5d1e1] sm:text-lg">
+                JEE Main, NEET, MHT-CET, IISER, NEST, CUET, NDA, UPSC, SSC, Railways and Banking —
+                every official date, notice and result, verified and in one place.
+              </p>
+            </SlideUp>
+            <SlideUp>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#exams"
+                  className="inline-flex items-center gap-2 bg-[#2d64eb] px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[5px_5px_0_#061227] transition hover:-translate-y-0.5 hover:bg-[#2456d1] active:scale-95"
+                >
+                  {t("Browse exams")} <ArrowRight className="size-4" />
+                </a>
+                <Link
+                  to="/government"
+                  className="inline-flex items-center gap-2 border border-white/70 px-5 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-white hover:text-[#081a33] active:scale-95"
+                >
+                  {t("Government & civil services")}
+                </Link>
+              </div>
+            </SlideUp>
+          </StaggerContainer>
+
+          <FadeIn delay={0.3} duration={0.8} className="relative hidden min-h-[390px] lg:block">
+            <div className="absolute -inset-20 rounded-[50%] bg-gradient-to-tr from-[#2d64eb]/20 to-transparent blur-3xl" />
+            <div className="absolute inset-4 rotate-2 border border-[#41658d] bg-[#102b4d] shadow-[12px_12px_0_#2d64eb] transition-transform duration-500 hover:rotate-1" />
+            <div className="absolute inset-0 overflow-hidden border border-[#6e8aaa] bg-[#173a62] transition-transform duration-500 hover:scale-[1.02]">
               <img
                 src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85"
                 alt="Students studying together around a table"
                 width={1200}
                 height={800}
                 fetchPriority="high"
-                className="absolute inset-0 size-full object-cover"
+                className="absolute inset-0 size-full object-cover mix-blend-overlay opacity-80"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#081a33] via-[#081a33]/40 to-transparent" />
               <div className="absolute inset-x-5 bottom-5">
                 <div className="flex items-center justify-between border-b border-white/25 pb-3">
                   <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">
-                    Live exam radar
+                    {t("Live exam radar")}
                   </span>
                   <span className="flex items-center gap-2 text-xs font-semibold text-white">
-                    <span className="size-2 animate-pulse rounded-full bg-[#58d68d]" /> Updated
-                    today
+                    <span className="size-2 animate-pulse rounded-full bg-[#58d68d]" />{" "}
+                    {t("Updated today")}
                   </span>
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-2">
@@ -229,7 +259,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </div>
+          </FadeIn>
         </div>
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px border-t border-white/10 bg-white/10 sm:grid-cols-4">
           <HeroStat value={cycleExams.length} label="Exams tracked" />
@@ -252,15 +282,15 @@ function Dashboard() {
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4">
           <div className="flex flex-wrap items-center gap-3">
-            <label className="relative flex-1 min-w-[200px]">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <span className="sr-only">Search exams</span>
+            <label className="relative flex-1 min-w-[200px] group">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-[#6fa0ff]" />
+              <span className="sr-only">{t("Search exam, body or code")}</span>
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                aria-label="Search exams"
-                placeholder="Search exam, body or code"
-                className="w-full rounded-lg border border-white/20 bg-[#102b4d] py-2 pl-9 pr-3 text-sm text-white shadow-sm outline-none placeholder:text-[#aebed3] transition-[border-color,box-shadow] focus:border-[#6fa0ff] focus:ring-2 focus:ring-[#6fa0ff]/30"
+                aria-label={t("Search exam, body or code")}
+                placeholder={t("Search exam, body or code")}
+                className="w-full rounded-lg border border-white/20 bg-[#102b4d] py-2 pl-9 pr-3 text-sm text-white shadow-sm outline-none placeholder:text-[#aebed3] transition-all duration-300 focus:border-[#6fa0ff] focus:ring-2 focus:ring-[#6fa0ff]/30 focus:bg-[#173a62]"
               />
             </label>
             <select
@@ -295,13 +325,13 @@ function Dashboard() {
                   : "border-white/20 bg-[#102b4d] text-white hover:bg-[#173a62]",
               )}
             >
-              My alerts ({follow.items.length})
+              {t("My alerts")} ({follow.items.length})
             </button>
           </div>
 
           <div className="flex flex-wrap gap-2">
             <Chip active={stream === "all"} onClick={() => setStream("all")}>
-              All streams
+              {t("All streams")}
             </Chip>
             {STREAMS.map((s) => (
               <Chip key={s} active={stream === s} onClick={() => setStream(s)}>
@@ -312,7 +342,7 @@ function Dashboard() {
 
           <div className="flex flex-wrap gap-2">
             <Chip active={category === "all"} onClick={() => setCategory("all")}>
-              All categories
+              {t("All categories")}
             </Chip>
             {CATEGORIES.map((c) => (
               <Chip key={c} active={category === c} onClick={() => setCategory(c)}>
@@ -325,7 +355,7 @@ function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <h2 className="mb-4 scroll-mt-24 text-xl font-semibold tracking-tight text-white">
-          Exam calendar {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
+          {t("Exam calendar")} {year} — {exams.length} exam{exams.length === 1 ? "" : "s"}
         </h2>
         {exams.length === 0 ? (
           <p className="rounded-2xl border border-dashed border-white/20 bg-[#102b4d] p-10 text-center text-sm text-[#c5d1e1]">
@@ -333,9 +363,10 @@ function Dashboard() {
           </p>
         ) : (
           <div className="reveal-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {exams.map((exam) => (
+            {exams.map((exam, i) => (
               <ExamCard
                 key={exam.slug}
+                index={i}
                 exam={exam}
                 now={now}
                 followed={follow.has(exam.slug)}
@@ -349,7 +380,7 @@ function Dashboard() {
           Dates marked tentative are planning estimates until the official bulletin is published.
           Always confirm on the conducting body's website before paying a fee.
         </p>
-        <LatestNotifications />
+        <ExamNotes />
       </div>
     </main>
   );
@@ -376,17 +407,19 @@ function Chip({
   children: React.ReactNode;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onClick}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       className={cn(
-        "rounded-full border px-3 py-1.5 text-xs font-medium transition-[transform,color,background-color,box-shadow] duration-200 hover:-translate-y-0.5 active:translate-y-0",
+        "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors duration-200",
         active
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
           : "border-white/20 bg-[#102b4d] text-[#c5d1e1] hover:bg-[#173a62] hover:text-white hover:shadow-sm",
       )}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

@@ -1,12 +1,7 @@
 import type { Exam, ExamDate } from "@/data/exams";
 
 export type StatusKey =
-  | "upcoming"
-  | "registration_open"
-  | "last_48h"
-  | "closed"
-  | "admit_card_live"
-  | "result_out";
+  "upcoming" | "registration_open" | "last_48h" | "closed" | "admit_card_live" | "result_out";
 
 export type ExamStatus = {
   key: StatusKey;
@@ -16,15 +11,17 @@ export type ExamStatus = {
   focusLabel?: string | undefined;
 };
 
-
 const at = (iso: string) => new Date(iso).getTime();
 
 export function getExamStatus(exam: Exam, now = Date.now()): ExamStatus {
-  const byType = (t: ExamDate["event_type"]) =>
-    exam.dates.filter((x) => x.event_type === t);
+  const byType = (t: ExamDate["event_type"]) => exam.dates.filter((x) => x.event_type === t);
 
-  const opens = byType("registration_open").sort((a, b) => at(a.start_datetime) - at(b.start_datetime));
-  const closes = byType("registration_close").sort((a, b) => at(a.start_datetime) - at(b.start_datetime));
+  const opens = byType("registration_open").sort(
+    (a, b) => at(a.start_datetime) - at(b.start_datetime),
+  );
+  const closes = byType("registration_close").sort(
+    (a, b) => at(a.start_datetime) - at(b.start_datetime),
+  );
   const admit = byType("admit_card")[0];
   const result = byType("result")[0];
 
@@ -52,7 +49,12 @@ export function getExamStatus(exam: Exam, now = Date.now()): ExamStatus {
   if (admit && at(admit.start_datetime) <= now) {
     const exam0 = byType("exam_date")[0];
     if (!exam0 || at(exam0.end_datetime ?? exam0.start_datetime) > now) {
-      return { key: "admit_card_live", label: "Admit card live", focus: exam0, focusLabel: "Exam in" };
+      return {
+        key: "admit_card_live",
+        label: "Admit card live",
+        focus: exam0,
+        focusLabel: "Exam in",
+      };
     }
   }
 
@@ -61,7 +63,12 @@ export function getExamStatus(exam: Exam, now = Date.now()): ExamStatus {
   }
 
   if (admit) {
-    return { key: "closed", label: "Registration closed", focus: admit, focusLabel: "Admit card in" };
+    return {
+      key: "closed",
+      label: "Registration closed",
+      focus: admit,
+      focusLabel: "Admit card in",
+    };
   }
 
   return { key: "closed", label: "Registration closed" };

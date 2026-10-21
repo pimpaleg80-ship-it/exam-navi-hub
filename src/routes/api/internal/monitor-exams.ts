@@ -35,7 +35,7 @@ async function supabaseRequest<T>(
       "Content-Type": "application/json",
       Prefer: "return=representation",
     },
-    body: init.body === undefined ? undefined : JSON.stringify(init.body),
+    body: init.body === undefined ? null : JSON.stringify(init.body),
   });
   if (!response.ok) {
     throw new Error(`Supabase ${table} request failed with HTTP ${response.status}`);

@@ -16,8 +16,8 @@ export type MonitorResult = {
   status: "changed" | "unchanged" | "failed";
   httpStatus?: number;
   contentHash?: string;
-  lastModified?: string;
-  etag?: string;
+  lastModified?: string | undefined;
+  etag?: string | undefined;
   title?: string;
   summary?: string;
   notificationType?: string;
