@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExamsRouteImport } from './routes/exams'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as GovernmentRouteImport } from './routes/government'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -48,6 +49,11 @@ const ContactRoute = ContactRouteImport.update({
 const ExamsRoute = ExamsRouteImport.update({
   id: '/exams',
   path: '/exams',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GovernmentRoute = GovernmentRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
   '/exams': typeof ExamsRoute
+  '/faq': typeof FaqRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
   '/exams': typeof ExamsRoute
+  '/faq': typeof FaqRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/ads.txt': typeof AdsDottxtRoute
   '/contact': typeof ContactRoute
   '/exams': typeof ExamsRoute
+  '/faq': typeof FaqRoute
   '/government': typeof GovernmentRoute
   '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/ads.txt'
     | '/contact'
     | '/exams'
+    | '/faq'
     | '/government'
     | '/privacy'
     | '/robots.txt'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/ads.txt'
     | '/contact'
     | '/exams'
+    | '/faq'
     | '/government'
     | '/privacy'
     | '/robots.txt'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/ads.txt'
     | '/contact'
     | '/exams'
+    | '/faq'
     | '/government'
     | '/privacy'
     | '/robots.txt'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   AdsDottxtRoute: typeof AdsDottxtRoute
   ContactRoute: typeof ContactRoute
   ExamsRoute: typeof ExamsRoute
+  FaqRoute: typeof FaqRoute
   GovernmentRoute: typeof GovernmentRoute
   PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       path: '/exams'
       fullPath: '/exams'
       preLoaderRoute: typeof ExamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/government': {
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdsDottxtRoute: AdsDottxtRoute,
   ContactRoute: ContactRoute,
   ExamsRoute: ExamsRoute,
+  FaqRoute: FaqRoute,
   GovernmentRoute: GovernmentRoute,
   PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
